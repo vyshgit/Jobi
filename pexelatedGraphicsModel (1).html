@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOCUS QUEST - 8-BIT HYPERDRIVE</title>
+    <!-- Use the classic 8-bit font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        /* CSS Variables for our 8-bit color palette */
+        :root {
+            --pixel-green: #00ff00;
+            --pixel-blue: #0080ff;
+            --pixel-red: #ff0040;
+            --pixel-yellow: #ffff00;
+            --pixel-purple: #8000ff;
+            --pixel-cyan: #00ffff;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #16213e;
+            --pixel-white: #ffffff;
+            --pixel-black: #000000;
+        }
+
+        /* Basic setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background-color: var(--dark-bg);
+            color: var(--pixel-white);
+            line-height: 1.8;
+            /* Force nearest-neighbor scaling for a crisp pixel look */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            font-size: 12px;
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+        }
+
+        /* --- ENHANCED VISUAL EFFECTS --- */
+
+        /* Animated Pixel Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(var(--pixel-blue) 1px, transparent 1px),
+                linear-gradient(90deg, var(--pixel-blue) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.1;
+            z-index: -2;
+            animation: pixelGridMove 20s linear infinite;
+        }
+
+        /* Scan Lines Overlay for that CRT Monitor Vibe */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0) 0px,
+                rgba(0, 0, 0, 0) 2px,
+                rgba(0, 0, 0, 0.2) 2px,
+                rgba(0, 0, 0, 0.2) 4px
+            );
+            z-index: 10000;
+            pointer-events: none; /* Make sure we can click through it */
+        }
+
+        /* Keyframe Animations */
+        @keyframes pixelGridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Glitch effect for titles */
+        .glitch {
+            position: relative;
+            animation: glitch-anim 2.5s infinite steps(1);
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--pixel-red);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--pixel-blue), 2px 2px var(--pixel-red);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(7px, 9999px, 87px, 0); }
+            100% { clip: rect(92px, 9999px, 98px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(33px, 9999px, 74px, 0); }
+            100% { clip: rect(15px, 9999px, 63px, 0); }
+        }
+        @keyframes glitch-anim {
+            0% { transform: skew(0deg); }
+            10% { transform: skew(0.5deg); }
+            20% { transform: skew(0deg); }
+            80% { transform: skew(0deg); }
+            90% { transform: skew(-0.8deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--darker-bg);
+            border-bottom: 4px solid var(--pixel-green);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 16px;
+            color: var(--pixel-yellow);
+            text-shadow: 2px 2px 0px var(--pixel-red);
+            user-select: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--pixel-white);
+            text-decoration: none;
+            padding: 8px 12px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--pixel-yellow);
+            background: rgba(0, 255, 0, 0.1);
+            text-shadow: 0 0 5px var(--pixel-green);
+        }
+        .nav-links a:hover::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            animation: blink 0.8s infinite;
+        }
+        .nav-links a:hover::after {
+            content: '<';
+            position: absolute;
+            right: 0;
+            animation: blink 0.8s infinite;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            background: radial-gradient(circle, rgba(22, 33, 62, 0.8) 0%, rgba(26, 26, 46, 1) 70%);
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .game-title {
+            font-size: clamp(28px, 6vw, 52px);
+            margin-bottom: 20px;
+            color: var(--pixel-yellow);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--pixel-green);
+            animation: blink 2s infinite;
+        }
+
+        .game-description {
+            font-size: 10px;
+            margin-bottom: 40px;
+            color: var(--pixel-white);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 2.2;
+        }
+
+        .start-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--pixel-red);
+            color: var(--pixel-white);
+            text-decoration: none;
+            border: 4px solid var(--pixel-yellow);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0px var(--pixel-blue);
+        }
+
+        .start-button:hover {
+            background: var(--pixel-yellow);
+            color: var(--pixel-red);
+            border-color: var(--pixel-green);
+            transform: translate(4px, 4px);
+            box-shadow: 0 0 0 var(--pixel-blue);
+        }
+
+        .start-button::before {
+            content: '▶ ';
+            animation: blink 1s infinite;
+        }
+
+        /* --- General Section Styling --- */
+        .game-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            border-bottom: 4px dashed var(--pixel-blue);
+        }
+        .game-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--pixel-cyan);
+            text-transform: uppercase;
+        }
+
+        .section-title::before,
+        .section-title::after {
+            content: '★';
+            color: var(--pixel-green);
+            margin: 0 20px;
+            animation: blink 1.5s infinite alternate;
+        }
+
+        /* --- Game Cards --- */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .game-card {
+            background: var(--darker-bg);
+            border: 4px solid var(--pixel-blue);
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--pixel-green);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+        }
+
+        .game-card h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--pixel-yellow);
+            text-transform: uppercase;
+        }
+
+        .game-card h3::before {
+            content: '◆ ';
+            color: var(--pixel-green);
+        }
+
+        .game-card p {
+            color: var(--pixel-white);
+            margin-bottom: 20px;
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .pixel-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--pixel-green);
+            color: var(--dark-bg);
+            text-decoration: none;
+            border: 2px solid var(--pixel-black);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            text-transform: uppercase;
+            transition: all 0.2s ease;
+        }
+
+        .pixel-button:hover {
+            background: var(--pixel-yellow);
+            color: var(--pixel-red);
+            border-color: var(--pixel-red);
+        }
+
+        /* --- Stats Section --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+            margin-bottom: 60px; /* Space for countdown */
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--darker-bg), var(--dark-bg));
+            border: 4px solid var(--pixel-green);
+            padding: 25px;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            color: var(--pixel-red);
+            display: block;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px var(--pixel-yellow);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--pixel-white);
+            text-transform: uppercase;
+        }
+
+        /* --- Countdown Timer --- */
+        .countdown-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .countdown-title {
+            font-size: 16px;
+            color: var(--pixel-yellow);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .time-box {
+            background: var(--pixel-black);
+            border: 2px solid var(--pixel-blue);
+            padding: 15px;
+            min-width: 100px;
+        }
+        .time-box span {
+            display: block;
+        }
+        .time-box .time-number {
+            font-size: 32px;
+            color: var(--pixel-green);
+            text-shadow: 0 0 5px var(--pixel-green);
+        }
+        .time-box .time-label {
+            font-size: 10px;
+            color: var(--pixel-white);
+            margin-top: 10px;
+        }
+
+
+        /* --- Terminal --- */
+        .game-terminal {
+            background: var(--pixel-black);
+            border: 4px solid var(--pixel-green);
+            margin: 40px auto;
+            font-family: 'Press Start 2P', monospace;
+            max-width: 800px;
+        }
+
+        .terminal-header {
+            background: var(--pixel-green);
+            color: var(--pixel-black);
+            padding: 8px 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .terminal-header::before {
+            content: '● ● ●';
+            letter-spacing: 5px;
+            color: var(--pixel-red);
+        }
+
+        .terminal-body {
+            padding: 25px;
+            color: var(--pixel-green);
+            font-size: 10px;
+            line-height: 2.2;
+            min-height: 250px;
+        }
+
+        .terminal-prompt { color: var(--pixel-yellow); }
+        .terminal-command { color: var(--pixel-cyan); }
+        .cursor { animation: blink 1s infinite; }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--darker-bg);
+            border-top: 6px solid var(--pixel-blue);
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .social-icon {
+            color: var(--pixel-white);
+            text-decoration: none;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--pixel-green);
+            transform: scale(1.2) rotate(15deg);
+        }
+
+        .credits {
+            color: var(--pixel-white);
+            font-size: 8px;
+            margin-top: 20px;
+            opacity: 0.7;
+        }
+
+        /* --- Konami Code Modal --- */
+        .konami-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 20000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .konami-content {
+            background: var(--dark-bg);
+            margin: auto;
+            padding: 30px;
+            border: 4px solid var(--pixel-red);
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px var(--pixel-red);
+        }
+        
+        .konami-content h2 {
+            color: var(--pixel-yellow);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .konami-content p {
+            color: var(--pixel-white);
+            font-size: 12px;
+            margin-bottom: 30px;
+        }
+        
+        #close-konami {
+            background: var(--pixel-red);
+            color: var(--pixel-white);
+        }
+        #close-konami:hover {
+            background: var(--pixel-yellow);
+            color: var(--pixel-red);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .game-title { font-size: 24px; }
+            .section-title { font-size: 20px; }
+            .game-grid { grid-template-columns: 1fr; }
+            .countdown-timer { gap: 10px; }
+            .time-box { min-width: 70px; padding: 10px; }
+            .time-box .time-number { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">LOCUS QUEST</div>
+            <ul class="nav-links">
+                <li><a href="#home">START</a></li>
+                <li><a href="#about">INFO</a></li>
+                <li><a href="#competitions">LEVELS</a></li>
+                <li><a href="#events">BONUS</a></li>
+                <li><a href="#contact">CREDITS</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="game-title glitch" data-text="LOCUS QUEST">LOCUS QUEST</h1>
+            <div class="subtitle">8-BIT HYPERDRIVE TECHFEST</div>
+            <div class="game-description">
+                EMBARK ON AN EPIC JOURNEY THROUGH THE DIGITAL REALM!<br>
+                COMPLETE CODING QUESTS • DEFEAT AI BOSSES • COLLECT POWER-UPS
+            </div>
+            <a href="#competitions" class="start-button">PRESS START</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="game-section">
+        <h2 class="section-title glitch" data-text="GAME INFO">GAME INFO</h2>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">QUEST LEVELS</span>
+            </div>
+            <div class="stat-box">
+                <span id="registered-users" class="stat-number">1337</span>
+                <span class="stat-label">REGISTERED USERS</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">72</span>
+                <span class="stat-label">HOURS GAMEPLAY</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">10L+</span>
+                <span class="stat-label">TREASURE (INR)</span>
+            </div>
+        </div>
+
+        <div class="countdown-container">
+            <h3 class="countdown-title">EVENT STARTS IN</h3>
+            <div id="countdown" class="countdown-timer">
+                <div class="time-box">
+                    <span id="days" class="time-number">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-box">
+                    <span id="hours" class="time-number">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-box">
+                    <span id="minutes" class="time-number">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-box">
+                    <span id="seconds" class="time-number">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-terminal">
+            <div class="terminal-header">LOCUS_QUEST.EXE</div>
+            <div class="terminal-body" id="terminal-output">
+                <!-- Content will be typed here by JS -->
+            </div>
+        </div>
+        
+    </section>
+
+    <!-- Competitions Section -->
+    <section id="competitions" class="game-section">
+        <h2 class="section-title glitch" data-text="CHOOSE YOUR QUEST">CHOOSE YOUR QUEST</h2>
+        <div class="game-grid">
+            <!-- Cards remain the same but will benefit from new hover effects -->
+            <div class="game-card">
+                <h3>CODE DUNGEON</h3>
+                <p>Navigate treacherous algorithms and solve programming puzzles to escape the debugging dungeon. Defeat the syntax error dragon!</p>
+                <a href="#" class="pixel-button">ENTER DUNGEON</a>
+            </div>
+            <div class="game-card">
+                <h3>AI BOSS BATTLE</h3>
+                <p>Face off against the ultimate AI overlord! Build your own machine learning warriors for the epic neural network showdown.</p>
+                <a href="#" class="pixel-button">CHALLENGE BOSS</a>
+            </div>
+            <div class="game-card">
+                <h3>WEB WIZARD TOWER</h3>
+                <p>Climb the mystical tower of responsive design! Cast HTML spells, wield CSS magic, and master JavaScript enchantments.</p>
+                <a href="#" class="pixel-button">CLIMB TOWER</a>
+            </div>
+            <div class="game-card">
+                <h3>CYBER DEFENSE</h3>
+                <p>Protect the kingdom from malicious hackers! Build firewalls, crack encrypted messages, and become the ultimate cyber guardian.</p>
+                <a href="#" class="pixel-button">DEFEND REALM</a>
+            </div>
+            <div class="game-card">
+                <h3>MOBILE ADVENTURE</h3>
+                <p>Quest across different mobile platforms! Create apps that work on ancient phones and futuristic devices in this journey.</p>
+                <a href="#" class="pixel-button">START QUEST</a>
+            </div>
+            <div class="game-card">
+                <h3>KNOWLEDGE ARENA</h3>
+                <p>Enter the colosseum of coding wisdom! Answer rapid-fire tech questions and prove you're the ultimate programming gladiator.</p>
+                <a href="#" class="pixel-button">ENTER ARENA</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="game-section">
+        <h2 class="section-title glitch" data-text="BONUS LEVELS">BONUS LEVELS</h2>
+        <div class="game-grid">
+            <div class="game-card">
+                <h3>MASTER CLASS</h3>
+                <p>Learn from the legendary pixel masters! Discover secret techniques and power-ups that will boost your coding abilities.</p>
+                <a href="#" class="pixel-button">LEARN SECRETS</a>
+            </div>
+            <div class="game-card">
+                <h3>INVENTION LAB</h3>
+                <p>Craft legendary artifacts in the invention workshop! Show off your creations to the council of tech wizards.</p>
+                <a href="#" class="pixel-button">CREATE MAGIC</a>
+            </div>
+            <div class="game-card">
+                <h3>GUILD RECRUITMENT</h3>
+                <p>Join powerful tech guilds seeking new members! Connect with other adventurers and form your ultimate party.</p>
+                <a href="#" class="pixel-button">JOIN GUILD</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <h2 class="section-title glitch" data-text="CONTACT">CONTACT</h2>
+            <div class="social-icons">
+                <a href="#" aria-label="Email" class="social-icon">@</a>
+                <a href="#" aria-label="LinkedIn" class="social-icon">in</a>
+                <a href="#" aria-label="GitHub" class="social-icon">{}</a>
+                <a href="#" aria-label="Twitter" class="social-icon">X</a>
+            </div>
+            <div class="credits">
+                © 2025 LOCUS QUEST - COMPUTER ENGINEERING DEPARTMENT
+                <br>
+                ALL PIXELS RESERVED • GAME OVER - PRESS START TO CONTINUE
+            </div>
+        </div>
+    </footer>
+
+    <!-- Konami Code Modal -->
+    <div id="konami-modal" class="konami-modal">
+        <div class="konami-content">
+            <h2 class="glitch" data-text="SECRET UNLOCKED">SECRET UNLOCKED</h2>
+            <p>KONAMI CODE ACTIVATED!<br>+30 LIVES GRANTED!</p>
+            <button id="close-konami" class="pixel-button">AWESOME</button>
+        </div>
+    </div>
+    
+    <!-- Tone.js for better 8-bit sounds -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Sound Engine using Tone.js ---
+            const synth = new Tone.Synth({
+                oscillator: { type: 'square' },
+                envelope: {
+                    attack: 0.005,
+                    decay: 0.1,
+                    sustain: 0.3,
+                    release: 0.2,
+                },
+            }).toDestination();
+
+            function playSound(note, duration) {
+                if (Tone.context.state !== 'running') {
+                    Tone.context.resume();
+                }
+                synth.triggerAttackRelease(note, duration);
+            }
+
+            // Click sound for all interactive elements
+            document.querySelectorAll('a, button').forEach(element => {
+                element.addEventListener('click', () => playSound('C4', '8n'));
+            });
+
+            // Hover sound for game cards
+            document.querySelectorAll('.game-card, .nav-links a').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    playSound('C5', '16n');
+                });
+            });
+
+            // --- Terminal Typing Effect ---
+            const terminalOutput = document.getElementById('terminal-output');
+            const lines = [
+                '<div><span class="terminal-prompt">PLAYER@LOCUS:~$</span> <span class="terminal-command">cat game_info.txt</span></div>',
+                '<div>Booting LocusOS v2.0.25...</div>',
+                '<div>Initializing pixel graphics... [OK]</div>',
+                '<div>Calibrating glitch matrix... [OK]</div>',
+                '<div>Setting difficulty: <span class="terminal-command">NIGHTMARE</span></div>',
+                '<div><br></div>',
+                '<div>WELCOME TO LOCUS QUEST!</div>',
+                '<div>THE ULTIMATE 8-BIT TECHFEST EXPERIENCE.</div>',
+                '<div><br></div>',
+                '<div><span class="terminal-prompt">PLAYER@LOCUS:~$</span> <span class="cursor">█</span></div>'
+            ];
+            let currentLine = 0;
+            let currentChar = 0;
+            let terminalHasTyped = false;
+
+            function typeLine() {
+                if (currentLine < lines.length) {
+                    const line = lines[currentLine];
+                    if (currentChar < line.length) {
+                        if (terminalOutput.innerHTML.endsWith('<span class="cursor">█</span>')) {
+                            terminalOutput.innerHTML = terminalOutput.innerHTML.slice(0, -28);
+                        }
+                        terminalOutput.innerHTML += line[currentChar];
+                        terminalOutput.innerHTML += '<span class="cursor">█</span>';
+                        currentChar++;
+                        setTimeout(typeLine, 20); // Typing speed
+                    } else {
+                        currentChar = 0;
+                        currentLine++;
+                        if (terminalOutput.innerHTML.endsWith('<span class="cursor">█</span>')) {
+                            terminalOutput.innerHTML = terminalOutput.innerHTML.slice(0, -28);
+                        }
+                        terminalOutput.innerHTML += '<br>';
+                        setTimeout(typeLine, 300); // Pause between lines
+                    }
+                }
+            }
+            
+            const terminalObserver = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting && !terminalHasTyped) {
+                    typeLine();
+                    terminalHasTyped = true; // Ensure it only types once
+                    terminalObserver.disconnect();
+                }
+            }, { threshold: 0.1 });
+
+            if (terminalOutput) {
+                terminalObserver.observe(terminalOutput);
+            }
+
+            // --- Konami Code Easter Egg ---
+            const konamiModal = document.getElementById('konami-modal');
+            const closeKonamiBtn = document.getElementById('close-konami');
+            let konamiCode = [];
+            const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+
+            document.addEventListener('keydown', (e) => {
+                konamiCode.push(e.key);
+                konamiCode.splice(-konamiSequence.length - 1, konamiCode.length - konamiSequence.length);
+                
+                if (konamiCode.join('').toLowerCase() === konamiSequence.join('')) {
+                    playSound('C5', '8n');
+                    setTimeout(() => playSound('E5', '8n'), 150);
+                    setTimeout(() => playSound('G5', '4n'), 300);
+                    
+                    konamiModal.style.display = 'flex';
+                    konamiCode = []; // Reset code
+                }
+            });
+
+            closeKonamiBtn.addEventListener('click', () => {
+                konamiModal.style.display = 'none';
+            });
+            
+            // --- Active Nav Link on Scroll ---
+            const sections = document.querySelectorAll('.game-section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+
+            window.addEventListener('scroll', () => {
+                let current = 'home'; // Default to home
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const linkHref = link.getAttribute('href');
+                    if (linkHref && linkHref.includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Countdown Timer ---
+            const countDownDate = new Date("Dec 1, 2025 00:00:00").getTime();
+            const countdownFunction = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+
+                if (distance < 0) {
+                    clearInterval(countdownFunction);
+                    document.getElementById("countdown").innerHTML = "<div class='glitch' data-text='EVENT IS LIVE!'>EVENT IS LIVE!</div>";
+                }
+            }, 1000);
+
+            // --- Registered Users Counter ---
+            let userCount = 1337;
+            const userCountElement = document.getElementById("registered-users");
+            setInterval(function() {
+                userCount += Math.floor(Math.random() * 3) + 1;
+                userCountElement.innerText = userCount;
+            }, 2500); // Update every 2.5 seconds
+
+        });
+    </script>
+</body>
+</html>
