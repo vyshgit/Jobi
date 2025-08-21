@@ -188,6 +188,7 @@
             transition: all 0.2s ease;
             text-transform: uppercase;
             position: relative;
+                        width: 50px;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -361,6 +362,7 @@
             font-size: 10px;
             text-transform: uppercase;
             transition: all 0.2s ease;
+    
         }
 
         .pixel-button:hover {
@@ -546,99 +548,8 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <!-- Matrix Rain Animation Module -->
-<!-- Add this div to your HTML where you want the animation -->
-<div id="matrix" class="matrix-container"></div>
-
-<!-- CSS - Add to your stylesheet -->
-<style>
-
-
-.matrix-column {
-        text-shadow: 0 0 5px #00ff00;
-    position: absolute;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    color: #00ff00;
-
-    animation: matrixFall linear infinite;
-    white-space: pre-line;
-    line-height: 1.2;
-}
-
-@keyframes matrixFall {
-    0% {
-        transform: translateY(-100vh);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh);
-        opacity: 0;
-    }
-}
-</style>
-
-<!-- JavaScript - Add to your script section or before closing body tag -->
-<script>
-function createMatrixRain() {
-    const container = document.getElementById('matrix');
-    const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()';
-    
-   function createColumn() {
-    const column = document.createElement('div');
-    column.className = 'matrix-column';
-
-    // Generate characters
-    let content = '';
-    const length = Math.floor(Math.random() * 15) + 8;
-    for (let i = 0; i < length; i++) {
-        content += characters.charAt(Math.floor(Math.random() * characters.length)) + '\n';
-    }
-
-    column.textContent = content;
-
-    // Position and animation
-    const duration = (Math.random() * 3 + 2).toFixed(2) + 's';
-    const delay = (Math.random() * 2).toFixed(2) + 's';
-    const left = (Math.random() * 100).toFixed(2) + '%';
-
-    column.style.left = left;
-    column.style.animationDuration = duration;
-    column.style.animationDelay = delay;
-
-    console.log(`Created column → Left: ${left}, Duration: ${duration}, Delay: ${delay}`);
-
-    // Optional: force reflow (sometimes needed for animation to apply)
-    void column.offsetWidth;
-
-    container.appendChild(column);
-
-    // Cleanup
-    setTimeout(() => {
-        if (container.contains(column)) {
-            container.removeChild(column);
-        }
-    }, 8000); // match or exceed max duration
-}
-
-    
-    // Create new columns continuously
-    setInterval(createColumn, 150);
-    
-    // Create initial batch
-    for (let i = 0; i < 25; i++) {
-        setTimeout(createColumn, i * 50);
-    }
-}
-
-// Initialize the matrix rain when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    createMatrixRain();
-});
-</script>
-
-
-        <div class="hero-content">
+        
+        <div class="hero-content" id="hero-content">
             <h1 class="game-title glitch" data-text="LOCUS QUEST">LOCUS QUEST</h1>
             <div class="subtitle">8-BIT HYPERDRIVE TECHFEST</div>
             <div class="countdown-container">
@@ -662,11 +573,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         </div>
-            <br><br>
-            <div class="game-description">
-                EMBARK ON AN EPIC JOURNEY THROUGH THE DIGITAL REALM!<br>
-                COMPLETE CODING QUESTS • DEFEAT AI BOSSES • COLLECT POWER-UPS
-            </div>
+            
+            
             <a href="#competitions" class="start-button">PRESS START</a>
         </div>
     </section>
@@ -678,15 +586,15 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="stats-grid">
             
             <div class="stat-box">
-                <span id="registered-users" class="stat-number">1337</span>
+                <span id="registered-users" class="stat-number">100</span>
                 <span class="stat-label">REGISTERED USERS</span>
             </div>
             <div class="stat-box">
-                <span class="stat-number">72</span>
+                <span class="stat-number">14</span>
                 <span class="stat-label">HOURS GAMEPLAY</span>
             </div>
             <div class="stat-box">
-                <span class="stat-number">10L+</span>
+                <span class="stat-number">50K</span>
                 <span class="stat-label">TREASURE (INR)</span>
             </div>
         </div>
@@ -703,34 +611,34 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="game-grid">
             <!-- Cards remain the same but will benefit from new hover effects -->
             <div class="game-card">
-                <h3>CODE DUNGEON</h3>
-                <p>Navigate treacherous algorithms and solve programming puzzles to escape the debugging dungeon. Defeat the syntax error dragon!</p>
-                <a href="#" class="pixel-button">ENTER DUNGEON</a>
+                <h3>CODE QUEST</h3>
+                <p>Join our two-phase coding competition: reverse engineer outputs, debug faulty code, test your skills, and compete for exciting prizes!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
             <div class="game-card">
-                <h3>AI BOSS BATTLE</h3>
-                <p>Face off against the ultimate AI overlord! Build your own machine learning warriors for the epic neural network showdown.</p>
-                <a href="#" class="pixel-button">CHALLENGE BOSS</a>
+                <h3>KEY STORM</h3>
+                <p>Test your typing speed and accuracy. Compete for first and second place. Fastest, most accurate typist wins. Register now!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
             <div class="game-card">
-                <h3>WEB WIZARD TOWER</h3>
-                <p>Climb the mystical tower of responsive design! Cast HTML spells, wield CSS magic, and master JavaScript enchantments.</p>
-                <a href="#" class="pixel-button">CLIMB TOWER</a>
+                <h3>QUIZTRIX</h3>
+                <p>Participate in our written quiz competition. Test your knowledge on paper, answer accurately, and compete for top positions and prizes!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
             <div class="game-card">
-                <h3>CYBER DEFENSE</h3>
-                <p>Protect the kingdom from malicious hackers! Build firewalls, crack encrypted messages, and become the ultimate cyber guardian.</p>
-                <a href="#" class="pixel-button">DEFEND REALM</a>
+                <h3>CRE8-LOGO</h3>
+                <p>Show your creativity by designing unique app logos. Compete for top positions, recognition, and exciting prizes!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
             <div class="game-card">
-                <h3>MOBILE ADVENTURE</h3>
-                <p>Quest across different mobile platforms! Create apps that work on ancient phones and futuristic devices in this journey.</p>
-                <a href="#" class="pixel-button">START QUEST</a>
+                <h3>WEB WIZARD</h3>
+                <p>Participate in our frontend web designing competition. Create stunning, responsive websites using only HTML, CSS, and creativity!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
             <div class="game-card">
-                <h3>KNOWLEDGE ARENA</h3>
-                <p>Enter the colosseum of coding wisdom! Answer rapid-fire tech questions and prove you're the ultimate programming gladiator.</p>
-                <a href="#" class="pixel-button">ENTER ARENA</a>
+                <h3>NEOTECH EXPO</h3>
+                <p>Showcase your innovations at our tech expo. Students compete by presenting unique tech creations, prototypes, and projects!</p>
+                <a href="#" class="pixel-button">ENTER</a>
             </div>
         </div>
     </section>
@@ -821,18 +729,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // --- Terminal Typing Effect ---
             const terminalOutput = document.getElementById('terminal-output');
-            const lines = [
-                '<div><span class="terminal-prompt">PLAYER@LOCUS:~$</span> <span class="terminal-command">cat game_info.txt</span></div>',
-                '<div>Booting LocusOS v2.0.25...</div>',
-                '<div>Initializing pixel graphics... [OK]</div>',
-                '<div>Calibrating glitch matrix... [OK]</div>',
-                '<div>Setting difficulty: <span class="terminal-command">NIGHTMARE</span></div>',
-                '<div><br></div>',
-                '<div>WELCOME TO LOCUS QUEST!</div>',
-                '<div>THE ULTIMATE 8-BIT TECHFEST EXPERIENCE.</div>',
-                '<div><br></div>',
-                '<div><span class="terminal-prompt">PLAYER@LOCUS:~$</span> <span class="cursor">█</span></div>'
-            ];
+            
             let currentLine = 0;
             let currentChar = 0;
             let terminalHasTyped = false;
