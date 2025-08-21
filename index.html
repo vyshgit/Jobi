@@ -158,7 +158,6 @@
             z-index: 1000;
             padding: 15px 0;
         }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
@@ -166,10 +165,11 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            font-size:10px ;
         }
 
         .logo {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--pixel-yellow);
             text-shadow: 2px 2px 0px var(--pixel-red);
             user-select: none;
@@ -218,8 +218,12 @@
             text-align: center;
             padding: 0 20px;
             position: relative;
-            background: radial-gradient(circle, rgba(22, 33, 62, 0.8) 0%, rgba(26, 26, 46, 1) 70%);
-        }
+            
+    animation: matrixFall linear infinite;
+    white-space: pre-line;
+    line-height: 1.2;
+            /*background: radial-gradient(circle, rgba(22, 33, 62, 0.8) 0%, rgba(26, 26, 46, 1) 70%);
+        */}
 
         .hero-content {
             z-index: 2;
@@ -227,22 +231,22 @@
         }
 
         .game-title {
-            font-size: clamp(28px, 6vw, 52px);
-            margin-bottom: 20px;
+            font-size: clamp(28px, 6vw, 34px);
+            margin-bottom: 5px;
             color: var(--pixel-yellow);
             text-transform: uppercase;
             letter-spacing: 4px;
         }
 
         .subtitle {
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 10px;
+            margin-bottom: 10px;
             color: var(--pixel-green);
             animation: blink 2s infinite;
         }
 
         .game-description {
-            font-size: 10px;
+            font-size: 8px;
             margin-bottom: 40px;
             color: var(--pixel-white);
             max-width: 600px;
@@ -259,7 +263,7 @@
             text-decoration: none;
             border: 4px solid var(--pixel-yellow);
             font-family: 'Press Start 2P', monospace;
-            font-size: 14px;
+            font-size: 12px;
             text-transform: uppercase;
             transition: all 0.2s ease;
             box-shadow: 4px 4px 0px var(--pixel-blue);
@@ -397,10 +401,10 @@
         /* --- Countdown Timer --- */
         .countdown-container {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 20px;
         }
         .countdown-title {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--pixel-yellow);
             margin-bottom: 30px;
             text-transform: uppercase;
@@ -421,7 +425,7 @@
             display: block;
         }
         .time-box .time-number {
-            font-size: 32px;
+            font-size: 26px;
             color: var(--pixel-green);
             text-shadow: 0 0 5px var(--pixel-green);
         }
@@ -432,42 +436,6 @@
         }
 
 
-        /* --- Terminal --- */
-        .game-terminal {
-            background: var(--pixel-black);
-            border: 4px solid var(--pixel-green);
-            margin: 40px auto;
-            font-family: 'Press Start 2P', monospace;
-            max-width: 800px;
-        }
-
-        .terminal-header {
-            background: var(--pixel-green);
-            color: var(--pixel-black);
-            padding: 8px 15px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .terminal-header::before {
-            content: '● ● ●';
-            letter-spacing: 5px;
-            color: var(--pixel-red);
-        }
-
-        .terminal-body {
-            padding: 25px;
-            color: var(--pixel-green);
-            font-size: 10px;
-            line-height: 2.2;
-            min-height: 250px;
-        }
-
-        .terminal-prompt { color: var(--pixel-yellow); }
-        .terminal-command { color: var(--pixel-cyan); }
-        .cursor { animation: blink 1s infinite; }
 
         /* --- Footer --- */
         footer {
@@ -566,19 +534,110 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">LOCUS QUEST</div>
+            <div class="logo">LOCUS</div>
             <ul class="nav-links">
-                <li><a href="#home">START</a></li>
-                <li><a href="#about">INFO</a></li>
-                <li><a href="#competitions">LEVELS</a></li>
-                <li><a href="#events">BONUS</a></li>
-                <li><a href="#contact">CREDITS</a></li>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#guest">GUEST</a></li>
+                <li><a href="#find-us">FIND US</a></li>
+                <li><a href="#contact">CONTACT US</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <!-- Matrix Rain Animation Module -->
+<!-- Add this div to your HTML where you want the animation -->
+<div id="matrix" class="matrix-container"></div>
+
+<!-- CSS - Add to your stylesheet -->
+<style>
+
+
+.matrix-column {
+        text-shadow: 0 0 5px #00ff00;
+    position: absolute;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #00ff00;
+
+    animation: matrixFall linear infinite;
+    white-space: pre-line;
+    line-height: 1.2;
+}
+
+@keyframes matrixFall {
+    0% {
+        transform: translateY(-100vh);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+</style>
+
+<!-- JavaScript - Add to your script section or before closing body tag -->
+<script>
+function createMatrixRain() {
+    const container = document.getElementById('matrix');
+    const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()';
+    
+   function createColumn() {
+    const column = document.createElement('div');
+    column.className = 'matrix-column';
+
+    // Generate characters
+    let content = '';
+    const length = Math.floor(Math.random() * 15) + 8;
+    for (let i = 0; i < length; i++) {
+        content += characters.charAt(Math.floor(Math.random() * characters.length)) + '\n';
+    }
+
+    column.textContent = content;
+
+    // Position and animation
+    const duration = (Math.random() * 3 + 2).toFixed(2) + 's';
+    const delay = (Math.random() * 2).toFixed(2) + 's';
+    const left = (Math.random() * 100).toFixed(2) + '%';
+
+    column.style.left = left;
+    column.style.animationDuration = duration;
+    column.style.animationDelay = delay;
+
+    console.log(`Created column → Left: ${left}, Duration: ${duration}, Delay: ${delay}`);
+
+    // Optional: force reflow (sometimes needed for animation to apply)
+    void column.offsetWidth;
+
+    container.appendChild(column);
+
+    // Cleanup
+    setTimeout(() => {
+        if (container.contains(column)) {
+            container.removeChild(column);
+        }
+    }, 8000); // match or exceed max duration
+}
+
+    
+    // Create new columns continuously
+    setInterval(createColumn, 150);
+    
+    // Create initial batch
+    for (let i = 0; i < 25; i++) {
+        setTimeout(createColumn, i * 50);
+    }
+}
+
+// Initialize the matrix rain when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    createMatrixRain();
+});
+</script>
+
+
         <div class="hero-content">
             <h1 class="game-title glitch" data-text="LOCUS QUEST">LOCUS QUEST</h1>
             <div class="subtitle">8-BIT HYPERDRIVE TECHFEST</div>
@@ -617,10 +676,7 @@
         <h2 class="section-title glitch" data-text="GAME INFO">GAME INFO</h2>
         
         <div class="stats-grid">
-            <div class="stat-box">
-                <span class="stat-number">50+</span>
-                <span class="stat-label">QUEST LEVELS</span>
-            </div>
+            
             <div class="stat-box">
                 <span id="registered-users" class="stat-number">1337</span>
                 <span class="stat-label">REGISTERED USERS</span>
