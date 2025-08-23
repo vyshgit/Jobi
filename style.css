@@ -341,11 +341,14 @@ line-height: 1.2;
     color: var(--pixel-green);
 }
 
-.game-card p {
-    color: var(--pixel-white);
-    margin-bottom: 20px;
+.game-card .main-p{
+    display: none;
+}
+.game-section p{
     font-size: 10px;
     line-height: 1.8;
+    margin-bottom: 20px;
+    color: var(--pixel-white);
 }
 
 .pixel-button {
@@ -491,7 +494,7 @@ footer {
 
 /* --- Konami Code Modal --- */
 .konami-modal {
-    display: none; /* Hidden by default */
+    display: flex; /* Hidden by default */
     position: fixed;
     z-index: 20000;
     left: 0;
@@ -545,4 +548,12 @@ footer {
     .countdown-timer { gap: 10px; }
     .time-box { min-width: 70px; padding: 10px; }
     .time-box .time-number { font-size: 24px; }
+}
+#close-event {
+  background: var(--pixel-green);
+  color: var(--dark-bg);
+}
+#close-event:hover {
+  background: var(--pixel-yellow);
+  color: var(--pixel-red);
 }
