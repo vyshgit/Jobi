@@ -310,7 +310,9 @@ line-height: 1.2;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
 }
-
+.game-grid > div:nth-child(3n + 1):last-child {
+    grid-column: 2; /* Move it to the second column */
+}
 .game-card {
     background: var(--darker-bg);
     border: 4px solid var(--pixel-blue);
