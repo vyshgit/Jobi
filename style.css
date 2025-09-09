@@ -313,6 +313,7 @@ line-height: 1.2;
 .game-grid > div:nth-child(3n + 1):last-child {
     grid-column: 2; /* Move it to the second column */
 }
+
 .game-card {
     background: var(--darker-bg);
     border: 4px solid var(--pixel-blue);
@@ -320,7 +321,9 @@ line-height: 1.2;
     transition: all 0.3s ease;
     position: relative;
 }
-
+.game-card li{
+    display: none;
+}
 .game-card:hover {
     transform: translateY(-10px);
     border-color: var(--pixel-green);
@@ -343,14 +346,14 @@ line-height: 1.2;
     color: var(--pixel-green);
 }
 
-.game-card .main-p{
-    display: none;
-}
-.game-section p{
+.game-card p {
+    color: var(--pixel-white);
+    margin-bottom: 20px;
     font-size: 10px;
     line-height: 1.8;
-    margin-bottom: 20px;
-    color: var(--pixel-white);
+}
+#game-grid-competition p{
+    display: none;
 }
 
 .pixel-button {
@@ -392,6 +395,7 @@ line-height: 1.2;
     color: var(--pixel-red);
     border-color: var(--pixel-red);
 }
+
 
 /* --- Stats Section --- */
 .stats-grid {
@@ -496,7 +500,7 @@ footer {
 
 /* --- Konami Code Modal --- */
 .konami-modal {
-    display: flex; /* Hidden by default */
+    display: none; /* Hidden by default */
     position: fixed;
     z-index: 20000;
     left: 0;
@@ -515,7 +519,7 @@ footer {
     padding: 30px;
     border: 4px solid var(--pixel-red);
     width: 90%;
-    max-width: 500px;
+    max-width: 850px;
     text-align: center;
     box-shadow: 0 0 20px var(--pixel-red);
 }
@@ -531,7 +535,33 @@ footer {
     font-size: 12px;
     margin-bottom: 30px;
 }
-
+#event-title{
+    font-size: 24px;
+}
+#event-rules-desc li,#event-match-desc li,#event-prize-desc li{
+    list-style: decimal;
+    margin:0px  40px;
+}
+#event-date{
+    color: #00ffff;
+    font-size: 18px;
+    font-weight: 800;
+}
+#event-rules, #event-match,#event-prize{
+    text-align: left;
+    font-size: 14px;
+    color: #56aaff;
+}
+#event-rules-desc,#event-match-desc,#event-prize-desc{
+    text-align: justify;
+}
+#event-reg-fees{
+    font-size: 14px;
+}
+.reg-fees{
+    color: #00ff00;
+    font-size: 18px;
+}
 #close-konami {
     background: var(--pixel-red);
     color: var(--pixel-white);
@@ -539,6 +569,9 @@ footer {
 #close-konami:hover {
     background: var(--pixel-yellow);
     color: var(--pixel-red);
+}
+#change-disc-style li{
+    list-style: disc;
 }
 
 /* --- Responsive Design --- */
@@ -550,12 +583,4 @@ footer {
     .countdown-timer { gap: 10px; }
     .time-box { min-width: 70px; padding: 10px; }
     .time-box .time-number { font-size: 24px; }
-}
-#close-event {
-  background: var(--pixel-green);
-  color: var(--dark-bg);
-}
-#close-event:hover {
-  background: var(--pixel-yellow);
-  color: var(--pixel-red);
 }
