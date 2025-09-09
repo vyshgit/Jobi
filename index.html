@@ -86,133 +86,281 @@
     <!-- Competitions Section -->
     <section id="competitions" class="game-section">
         <h2 class="section-title glitch" data-text="CHOOSE YOUR QUEST">CHOOSE YOUR QUEST</h2>
-        <div class="game-grid">
-            <!-- Cards remain the same but will benefit from new hover effects -->
-            <div class="game-card">
-                <h3>CODE QUEST</h3>
-                <h5>Join our two-phase coding competition: reverse engineer outputs, debug faulty code, test your skills,
-                    and compete for exciting prizes!</h5>
-                  <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>KEY STORM</h3>
-                <h5>Test your typing speed and accuracy. Compete for first and second place. Fastest, most accurate
-                    typist wins. Register now!</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
+        <div class="game-grid" id="game-grid-competition">
+            <!--Quiz-->
             <div class="game-card">
                 <h3>QUIZTRIX</h3>
+            
                 <h5>Participate in our written quiz competition. Test your knowledge on paper, answer accurately, and
                     compete for top positions and prizes!</h5>
-                   <p>popup data here content here yo yo</p>
+            
+                <p id="main-p" class="main-p">Quiz Competition</p>
+            
+                <p class="main-date" id="main-date">Date & Time: To be announced</p>
+            
+                <p class="main-rules1" id="main-rules1">General Rules : </p>
+                <ul id="main-rules-data1" class="main-rules-data1">
+                    <li>Each team must consist of 2 to 3 members.</li>
+                    <li>The quiz consists of two rounds: Written Multiple Choice and Rapid Fire.</li>
+                    <li>Each correct answer earns 1 point. There is no negative marking.</li>
+                    <li>Any team found engaging in unfair practices will be disqualified immediately.</li>
+                    <li>The decision of the quizmaster will be final and binding in all matters.</li>
+                    <li>Teams are encouraged to maintain a spirit of healthy competition.</li>
+                </ul>
+            
+                <p class="main-rules2" id="main-rules2">Competition Format : </p>
+                <ol id="main-rules-data2" class="main-rules-data2">
+                    <li>
+                        <span style="font-weight:bold; color:#ffff00;">Round 1: Written Multiple Choice (Knockout)</span>
+                        <ul style="list-style-type: disc;" id="change-disc-style">
+                            <li>This round will consist of 20 multiple-choice questions.</li>
+                            <li>A time limit of 30 minutes will be given.</li>
+                            <li>The top five teams with the highest scores will advance to Round 2.</li>
+                            <li>A tiebreaker question will be used if necessary to determine finalists.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span style="font-weight:bold; color:#ffff00;">Round 2: Rapid Fire</span>
+                        <ul style="list-style-type: disc;" id="change-disc-style">
+                            <li>This round will have 5 questions asked orally to each team.</li>
+                            <li>Teams will have 30 seconds to answer each question.</li>
+                            <li>If a team answers incorrectly, the question can be answered by the next team.</li>
+                            <li>Tiebreaker questions will be asked if there is a tie for the winning positions.</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <p class="main-rules3" id="main-rules3">Prizes : </p>
+                <ul id="main-rules-data3" class="main-rules-data3">
+                    <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 2000</b></li>
+                    <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 1000</b></li>
+                </ul>
+            
+                <p class="main-rules-data4" id="main-rules-data4">
+                    Registration Fees : <b class="reg-fees">50/-</b>
+                </p>
+            
+                <p class="number-of-slots" id="number-of-slots">
+                    Number of Slots : <b>To be announced</b>
+                </p>
+            
+                <p class="event-details" style="display:block"></p>
+            
                 <div class="game-card-buttons">
                     <a href="#" class="pixel-button">ENTER</a>
                     <a href="#" class="pixel-button-preview">PREVIEW</a>
                 </div>
             </div>
-            <div class="game-card">
-                <h3>CRE8-LOGO</h3>
-                <h5>Show your creativity by designing unique app logos. Compete for top positions, recognition, and
-                    exciting prizes!</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>WEB WIZARD</h3>
-                <h5>Participate in our frontend web designing competition. Create stunning, responsive websites using
-                    only HTML, CSS, and creativity!</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>NEOTECH EXPO</h3>
-                <h5>Showcase your innovations at our tech expo. Students compete by presenting unique tech creations,
-                    prototypes, and projects!</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>POSTER DESIGNING</h3>
-                <h5>Unleash your creativity and let your pixels do the talking! Design a visually stunning poster that
-                    captures the theme and win big.</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>SEMINAR</h3>
-                <h5>Prove your expertise. Deliver a compelling technical seminar with clarity and confidence to win this
-                    battle of intellect.</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
-            <div class="game-card">
-                <h3>DIGI VARA</h3>
-                <h5>Unleash your imagination on a digital canvas. Blend creativity with technology to paint a stunning
-                    masterpiece and prove your artistic skill.</h5>
-                   <p>popup data here content here yo yo</p>
-                <div class="game-card-buttons">
-                    <a href="#" class="pixel-button">ENTER</a>
-                    <a href="#" class="pixel-button-preview">PREVIEW</a>
-                </div>
-            </div>
+            <!--FreeFire-->
             <div class="game-card">
                 <h3>LOOT N SHOOT</h3>
-                <h5>Assemble your squad for a fast-paced mobile battle royale. Fight, survive, and be the last team
-                    standing to claim the ultimate "Booyah!"</h5>
-                   <p>popup data here content here yo yo</p>
+                <h5>Assemble your squad for a fast-paced mobile battle royale. Fight, survive, and be the last team standing to claim the ultimate "Booyah!"</h5>
+                <p id="main-p" class="main-p">Free Fire</p>
+                <p class="main-date" id="main-date">Date & Time: To be announced</p>
+            
+                <p class="main-rules1" id="main-rules1">Rules and Regulations : </p>
+                <p class="main-rules-data1">
+                    <ul id="main-rules-data1">
+                        <li>Participants must bring their smartphones and other required items.</li>
+                        <li>Teams are required to register before the tournament begins; no late registrations will be accepted.</li>
+                        <li>The tournament format will be either Battle Royale or Clash Squad, depending on team availability.</li>
+                        <li>Decision of the committee will be final.</li>
+                    </ul>
+                </p>
+            
+                <p class="main-rules2" id="main-rules2">Match Rules : </p>
+                <p class="main-rules-data2">
+                    <ol id="main-rules-data2">
+                        <li>
+                            <span style="font-weight:bold; color:#ffff00;">Game Rules</span>
+                            <ul style="list-style-type: disc;">
+                                <li>Each team must have 4 players.</li>
+                                <li>Character skill will be off.</li>
+                                <li>Gun skin will be on.</li>
+                                <li>The cash prize will be distributed among the team members.</li>
+                                <li>If any player in a team breaks the rules, the whole team will be disqualified.</li>
+                                <li>Number of Slots : 16</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </p>
+            
+                <p class="main-rules3" id="main-rules3">Prize & Fair Play : </p>
+                <p class="main-rules-data3">
+                    <ul id="main-rules-data3">
+                        <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 1000</b></li>
+                        <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 800</b></li>
+                    </ul>
+                </p>
+            
+                <p class="main-rules-data4" id="main-rules-data4">
+                    Registration Fees : <b class="reg-fees">100/-</b> per team
+                </p>
+            
+                <p class="number-of-slots" id="number-of-slots">
+                    Number of Slots : <b>16</b>
+                </p>
+            
+                <p class="event-details" style="display:block"></p>
                 <div class="game-card-buttons">
                     <a href="#" class="pixel-button">ENTER</a>
                     <a href="#" class="pixel-button-preview">PREVIEW</a>
                 </div>
             </div>
+            
+            <!--mini miltia-->
             <div class="game-card">
                 <h3>MILITIA MAYHEM</h3>
-                <h5>Grab your jetpack and dive into chaotic 2D mayhem! Dodge, shoot, and blast your way through opponents
-                    in this classic shooter showdown.</h5>
-                   <p>popup data here content here yo yo</p>
+                <h5>Grab your jetpack and dive into chaotic 2D mayhem! Dodge, shoot, and blast your way through opponents in this classic shooter showdown.</h5>
+                <p id="main-p" class="main-p">Mini Militia</p>
+                <p class="main-date" id="main-date">Date & Time: To be announced</p>
+            
+                <p class="main-rules1" id="main-rules1">Rules and Regulations : </p>
+                <p class="main-rules-data1">
+                    <ul id="main-rules-data1">
+                        <li>Maximum of 4 per team</li>
+                        <li>Players must use the specific game version provided by the organizers.</li>
+                        <li>Devices must handle game without lag and be fully charged before matches.</li>
+                        <li>All players must connect to the same local wifi-network provided by the organizer.</li>
+                        <li>Use of external apps (VPNs, boosters, hacks, etc.) is strictly prohibited.</li>
+                        <li>Gas grenades are not allowed in matches.</li>
+                        <li>Number of slots: 12</li>
+                    </ul>
+                </p>
+            
+                <p class="main-rules2" id="main-rules2">Match Rules : </p>
+                <p class="main-rules-data2">
+                    <ol id="main-rules-data2">
+                        <li>
+                            <span style="font-weight:bold; color:#ffff00;">Tournament Format</span>
+                            <ul style="list-style-type: disc;">
+                                <li>Knockout format</li>
+                                <li>Map: <span style="color:#ffff00;">Outpost</span></li>
+                                <li>Duration: <span style="color:#ffff00;">10 minutes</span></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </p>
+            
+                <p class="main-rules3" id="main-rules3">Prize & Fair Play : </p>
+                <p class="main-rules-data3">
+                    <ul id="main-rules-data3">
+                        <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 600</b></li>
+                        <li style="list-style: none; color: #ffff00;">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 400</b></li>
+                    </ul>
+                </p>
+            
+                <p class="main-rules-data4" id="main-rules-data4">Registration Fees : <b class="reg-fees">100/-</b> per team</p>
+                <p class="event-details" style="display:block"></p>
                 <div class="game-card-buttons">
                     <a href="#" class="pixel-button">ENTER</a>
                     <a href="#" class="pixel-button-preview">PREVIEW</a>
                 </div>
             </div>
+            
+            
+            <!--PES-->
             <div class="game-card">
                 <h3>ICONIC CLASH</h3>
-                  <h5>Take to the virtual pitch and showcase your football mastery. Build your dream team, outplay your
-                    opponent, and score legendary goals!</h5>
-                  <p>popup data here content here yo yo</p>
+                <p id="main-p" class="main-p">e-Football</p>
+                <p class="main-date" id="main-date">Date & Time: To be announced</p>
+                
+                <p class="main-rules1" id="main-rules1">Rules and Regulations : </p>
+                <p class="main-rules-data1">
+                    <ul id="main-rules-data1">
+                        <li>All players must respect fair play and sportsmanship.</li>
+                        <li>Matches will be played on the latest version of eFootball.</li>
+                        <li>Controllers must be configured before the match begins.</li>
+                        <li>Any form of cheating or exploiting bugs will result in disqualification.</li>
+                    </ul>
+                </p>
+                
+                <p class="main-rules2" id="main-rules2">Match Rules : </p>
+                <p class="main-rules-data2">
+                    <ol id="main-rules-data2">
+                        <li>
+                            <span style="font-weight:bold; color:#ffff00;">PvP Mode</span>
+                            <ul>
+                                <li>Match duration: 8 minutes</li>
+                                <li>Team strength: must be 3100 or less</li>
+                                <li>Card usage: any card is allowed</li>
+                                <li>Player condition: set to excellent</li>
+                                <li>Substitutions: maximum of 6</li>
+                                <li>Extra time & penalties: enabled</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span style="font-weight:bold; color:#ffff00;">Co-op Mode</span>
+                            <ul>
+                                <li>Team composition: 3 member team</li>
+                                <li>Match duration: 10 minutes</li>
+                                <li>Team strength: no limitation</li>
+                                <li>Other rules: same as PvP mode</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </p>
+                
+            
+                <p class="main-rules3" id="main-rules3">Prize & Fair Play :</p>
+                <p class="main-rules-data3">
+                    <ul id="main-rules-data3">
+                        <li>PvP Mode: Prizes will be given to the players ranking #1 and #2</li>
+                        <li style="list-style: none;color: #ffff00">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 2000</b></li>
+                        <li style="list-style: none;color: #ffff00;">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 1500</b></li>
+                        <li>Coop Mode: Prizes will be given to the teams ranking #1 and #2</li>
+                        <li style="list-style: none;color: #ffff00">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 2000</b></li>
+                        <li style="list-style: none;color: #ffff00;">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 1500</b></li>
+                        <li style="list-style: none;color: #ffff00;">&nbsp;&nbsp;&nbsp;Top Scoring Team: <b>Rs : 500</b></li>
+                    </ul>
+                </p>
+            
+                <p class="main-rules-data4" id="main-rules-data4">
+                    Registration Fees : <br>PvP Entry: <b class="reg-fees">100/-</b> per player, Slots: 64 <br>Coop Entry:<b class="reg-fees"> 150/-</b> per team, Slots: 16
+                </p>
+                <p class="event-details" style="display:block">
+                    Take to the virtual pitch and showcase your football mastery. Build your dream team, outplay your
+            opponent, and score legendary goals!
+                </p>
                 <div class="game-card-buttons">
                     <a href="#" class="pixel-button">ENTER</a>
                     <a href="#" class="pixel-button-preview">PREVIEW</a>
                 </div>
             </div>
+            
+            <!--bgmi-->
             <div class="game-card">
                 <h3>RED ZONE</h3>
-                <h5>Drop into India's favourite battlegrounds with your squad. Strategize, loot, and survive to claim
-                    that coveted "Winner Winner Chicken Dinner!"</h5>
-                     <p>popup data here content here yo yo</p>
+                <p id="main-p" class="main-p">BGMI Game</p>
+                <p class="main-date" id="main-date">Dec 1, 10 am</p>
+                <p class="main-rules1" id="main-rules1">Rules and Regulations : </p>
+                <p class="main-rules-data1"><ul id="main-rules-data1">
+                    <li>Total Teams : 25</li>
+                    <li>Platfrom - Only mobile devices allowed (no emulator,controller or triggers)</li>
+                    <li>Game Version - Latest BGMI version must be installed before the match</li>
+                    <li>Mode - Erangel TPP Squad (Not Themed Mode)</li>
+                    <li>Lobby Joining - Join within 5 minutes after ID & password are shared.</li>
+                </ul>
+                </p>
+                <p class="main-rules2" id="main-rules2">Match Rules : </p>
+                <p class="main-rules-data2"><ul id="main-rules-data2">
+                    <li>Cheating If any player get caught using any sort of hacks/scripts, the entire team will get disqualified.</li>
+                    <li>Teaming - Teams from different squads teaming up results in disqualification.</li>
+                    <li>Glitches - No exploring map glitches.</li>
+                    <li>Mic Usage - In game voice chat allowed but keep it clean.</li>
+                    <li>Players should report at the venue on time or will get disqualified , no refunds will be provided.</li>
+                </ul></p>
+                <p class="main-rules3" id="main-rules3">Prize & Fair Play : </p>&#10;
+                <p class="main-rules-data3">
+                    <ul id="main-rules-data3">
+                        <li>Prizes will be given to the teams with ranking #1 and #2</li>
+                        <li style="list-style: none;color: #ffff00">&nbsp;&nbsp;&nbsp;First Prize : <b>Rs : 2000</b></li>
+                        <li style="list-style: none;color: #ffff00;"">&nbsp;&nbsp;&nbsp;Second Prize : <b>Rs : 1000</b></li>
+                    </ul>
+                </p>
+                <p class="main-rules-data4" id="main-rules-data4">Registration Fees : <b class="reg-fees">200/-</b>per slot</p>
+               <p class="event-details" style="display:block">Drop into India's favourite battlegrounds with your squad. Strategize, loot, and survive to claim
+                    that coveted "Winner Winner Chicken Dinner!"</p>
                 <div class="game-card-buttons">
                     <a href="#" class="pixel-button">ENTER</a>
                     <a href="#" class="pixel-button-preview">PREVIEW</a>
