@@ -94,10 +94,22 @@
         }
 
         /* Glitch effect for titles */
-        .glitch {
+       .glitch {
             position: relative;
             animation: glitch-anim 2.5s infinite steps(1);
         }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-bg);
+        }
+
         .glitch::before {
             left: 2px;
             text-shadow: -2px 0 var(--pixel-red);
@@ -224,7 +236,7 @@
             font-size: 10px;
             margin-bottom: 10px;
             color: var(--pixel-green);
-            animation: blink 2s infinite;
+            
         }
 
     .progress-bar {
@@ -267,46 +279,7 @@
             animation: blink 1.5s infinite alternate;
         }
 
-        /* --- Game Cards --- */
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-
-        .game-card {
-            background: var(--darker-bg);
-            border: 4px solid var(--pixel-blue);
-            padding: 25px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--pixel-green);
-            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
-        }
-
-        .game-card h3 {
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: var(--pixel-yellow);
-            text-transform: uppercase;
-        }
-
-        .game-card h3::before {
-            content: '◆ ';
-            color: var(--pixel-green);
-        }
-
-        .game-card p {
-            color: var(--pixel-white);
-            margin-bottom: 20px;
-            font-size: 10px;
-            line-height: 1.8;
-        }
-
+        
         .pixel-button {
             display: inline-block;
             padding: 10px 20px;
