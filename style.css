@@ -352,8 +352,11 @@ line-height: 1.2;
     font-size: 10px;
     line-height: 1.8;
 }
-#game-grid-competition p{
+#game-grid-competition p,.game-section p{
     display: none;
+}
+.game-card h5{
+    margin-bottom: 20px;
 }
 
 .pixel-button {
@@ -519,7 +522,7 @@ footer {
     padding: 30px;
     border: 4px solid var(--pixel-red);
     width: 90%;
-    max-width: 850px;
+    max-width: 1000px;
     text-align: center;
     box-shadow: 0 0 20px var(--pixel-red);
 }
@@ -533,7 +536,7 @@ footer {
 .konami-content p {
     color: var(--pixel-white);
     font-size: 12px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 #event-title{
     font-size: 24px;
