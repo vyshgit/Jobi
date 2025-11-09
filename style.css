@@ -251,21 +251,22 @@ nav {
 }
 /*submenu*/
 .nav-submenu {
-    position: absolute; /* better than absolute for fullscreen overlays */
+    position: fixed;
     top: 0;
     left: 2000px;
     width: 100vw;
     height: 100vh;
     background: var(--darker-bg);
-    display: flex;              /* enable flexbox */
-    justify-content: center;    /* center horizontally */
+    display: flex;
+    justify-content: center;
     align-items: center;
     transition: 1s all ease;
     opacity: 0.5;
+    z-index: 10000;
 }
 .nav-submenu-links {
     display: flex;
-    flex-direction: column; /* stack links vertically */             /* space between links */
+    flex-direction: column;
     text-align: center;
 }
 .nav-submenu li{
@@ -321,8 +322,7 @@ nav {
 animation: matrixFall linear infinite;
 white-space: pre-line;
 line-height: 1.2;
-    /*background: radial-gradient(circle, rgba(22, 33, 62, 0.8) 0%, rgba(26, 26, 46, 1) 70%);
-*/}
+}
 
 .hero-content {
     z-index: 2;
@@ -416,7 +416,7 @@ line-height: 1.2;
     gap: 40px;
 }
 .game-grid > div:nth-child(3n + 1):last-child {
-    grid-column: 2; /* Move it to the second column */
+    grid-column: 2;
 }
 
 .game-card {
@@ -505,7 +505,7 @@ line-height: 1.2;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 30px;
     text-align: center;
-    margin-bottom: 60px; /* Space for countdown */
+    margin-bottom: 60px;
 }
 
 .stat-box {
@@ -602,7 +602,7 @@ footer {
 
 /* --- Konami Code Modal --- */
 .konami-modal {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     z-index: 20000;
     left: 0;
@@ -690,6 +690,7 @@ footer {
 }
 .nav-menu span{
     display: none;
+    z-index: 10001;
 }
 @media (max-width:1270px){
     body{font-size: 11px;}
@@ -719,9 +720,10 @@ footer {
     .mute-btn {
         position: absolute;
         right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1001;
     }
-    /*.nav-links .nav-menu i ,.nav-menu .material-symbols-outlined{top:10px}
-    .nav-submenu{left: 0px;opacity: 1;} */
     .game-title { font-size: 24px; }
     .section-title { font-size: 20px; }
     .game-grid { grid-template-columns: 1fr; }

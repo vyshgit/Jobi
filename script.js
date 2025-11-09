@@ -582,6 +582,44 @@ if(muteBtn) {
     });
 }
 
+// --- Mobile Menu Functions ---
+function faBars() {
+    const submenu = document.querySelector('.nav-submenu');
+    const barsIcon = document.querySelector('.nav-menu i');
+    const closeIcon = document.querySelector('.nav-menu span');
+    
+    if(submenu && barsIcon && closeIcon) {
+        submenu.style.left = '0px';
+        submenu.style.opacity = '1';
+        barsIcon.style.display = 'none';
+        closeIcon.style.display = 'block';
+    }
+}
+
+function materialSymbolsOutlines() {
+    const submenu = document.querySelector('.nav-submenu');
+    const barsIcon = document.querySelector('.nav-menu i');
+    const closeIcon = document.querySelector('.nav-menu span');
+    
+    if(submenu && barsIcon && closeIcon) {
+        submenu.style.left = '2000px';
+        submenu.style.opacity = '0.5';
+        barsIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+    }
+}
+
+// Close submenu when clicking on a link
+document.querySelectorAll('.nav-submenu a').forEach(link => {
+    link.addEventListener('click', () => {
+        materialSymbolsOutlines();
+    });
+});
+
+// Make functions globally accessible
+window.faBars = faBars;
+window.materialSymbolsOutlines = materialSymbolsOutlines;
+
 // --- Konami Code Easter Egg ---
 const konamiModal = document.getElementById('konami-modal');
 const closeKonamiBtn = document.getElementById('close-konami');
@@ -714,6 +752,14 @@ const countdownFunction = setInterval(function () {
                 eventModal.style.display = 'none';
             });
         }
+
+        // Function for inline onclick handler
+        window.closeEventBtnHere = function() {
+            document.body.style.overflow="auto";
+            if(eventModal) {
+                eventModal.style.display = 'none';
+            }
+        };
 
 
         window.addEventListener('click', (e) => {
