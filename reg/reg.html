@@ -7,7 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     
     <!-- Added Razorpay checkout script -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script type="application/javascript" 
+  src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/YOURMID12345.js">
+</script>
+
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
@@ -943,7 +946,8 @@
                 <button type="button" id="prevBtn" class="btn btn-secondary">← BACK</button>
                 <button type="button" id="nextBtn" class="btn btn-primary">NEXT →</button>
                 <!-- Changed button text -->
-                <button type="submit" id="submitBtn" class="btn btn-submit hidden">PROCEED TO PAYMENT</button>
+                <button type="submit" id="submitBtn" class="btn btn-submit">PROCEED TO PAYMENT</button>
+
             </div>
     </form>
     
@@ -1530,109 +1534,91 @@
           reviewSection.innerHTML = html;
         }
 
-        function handleSubmit(e) {
-          e.preventDefault();
-          
-          if (!validateCurrentStep()) {
-            showError("Please correct the errors before submitting.");
-            return;
-          }
-          
-          // Collect final form data
-          formData = collectFormData();
-          
-          // Simulate form submission
-          submitBtn.textContent = 'SUBMITTING...';
-          submitBtn.disabled = true;
-          
-          // --- PAYMENT INTEGRATION ---
-          // If total is 0, just register them for free
-          if (formData.totalPrice <= 0) {
-            console.log('Free registration, skipping payment.');
-            setTimeout(() => {
-              console.log('Form submitted:', formData);
-              showSuccessModal();
-              submitBtn.textContent = 'PROCEED TO PAYMENT';
-              submitBtn.disabled = false;
-            }, 1000); // Short delay for "submitting"
-            return;
-          }
+       async function handleSubmit(e) {
+  e.preventDefault();
 
-          // If total is > 0, open Razorpay checkout
-          const options = {
-            "key": "rzp_test_ILzsdMSAWAfarg", // This is a public test key
-            "amount": formData.totalPrice * 100, // Amount in paise (e.g., ₹50 becomes 5000)
-            "currency": "INR",
-            "name": "LOCUS QUEST Registration",
-            "description": "TechFest Event Fees",
-            "image": "https://placehold.co/100x100/00ff00/1a1a2e?text=LQ", // A placeholder logo
-            "handler": function (response){
-                // This function is called on successful payment
-                console.log('Payment successful:', response);
-                // alert(response.razorpay_payment_id);
-                // alert(response.razorpay_order_id);
-                // alert(response.razorpay_signature);
-                
-                // Now show the success modal
-                showSuccessModal();
-                submitBtn.textContent = 'PROCEED TO PAYMENT';
-                submitBtn.disabled = false;
-            },
-            "prefill": {
-                "name": formData.personal.fullName,
-                "email": formData.personal.email,
-                "contact": formData.personal.phone
-            },
-            "notes": {
-                "institution": formData.personal.institution,
-                "competitions": formData.competitions.join(', ')
-            },
-            "theme": {
-                "color": "#00ff00" // Your pixel-green color
-            },
-            "modal": {
-                "ondismiss": function(){
-                    // This is called when the user closes the payment modal
-                    console.log('Payment modal dismissed.');
-                    submitBtn.textContent = 'PROCEED TO PAYMENT';
-                    submitBtn.disabled = false;
-                }
-            }
-          };
+  // 1️⃣ Collect all form data
+  const data = collectFormData();
+  const totalAmount = data.totalPrice;
 
-          try {
-            const rzp = new Razorpay(options);
-            rzp.open();
-          } catch(e) {
-            console.error("Razorpay error:", e);
-            showError("Could not open payment window. Please try again.");
-            submitBtn.textContent = 'PROCEED TO PAYMENT';
-            submitBtn.disabled = false;
-          }
+  // 2️⃣ Create registration entry first
+  const regResponse = await fetch("/api/create-registration", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const regResult = await regResponse.json();
+  if (!regResult.ok) {
+    showError("Error creating registration. Try again.");
+    return;
+  }
+
+  const orderId = regResult.orderId;
+
+  // 3️⃣ Create Paytm order and get txnToken
+  const paytmResponse = await fetch("/api/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      amount: totalAmount,
+      customer: data.personal,
+      orderId: orderId,
+    }),
+  });
+
+  const paytmResult = await paytmResponse.json();
+  if (!paytmResult.body || !paytmResult.body.txnToken) {
+    showError("Failed to initialize Paytm transaction.");
+    console.error("Paytm response:", paytmResult);
+    return;
+  }
+
+  const txnToken = paytmResult.body.txnToken;
+
+  // 4️⃣ Initialize Paytm Checkout
+  const config = {
+    root: "",
+    flow: "DEFAULT",
+    data: {
+      orderId: orderId,
+      token: txnToken,
+      tokenType: "TXN_TOKEN",
+      amount: totalAmount.toString(),
+    },
+    handler: {
+      transactionStatus: function (paymentStatus) {
+        console.log("Payment status:", paymentStatus);
+        if (paymentStatus.STATUS === "TXN_SUCCESS") {
+          alert("Payment successful! Redirecting...");
+          window.location.reload(); // optional: refresh page or show success modal
+        } else {
+          showError("Payment failed or cancelled.");
         }
+      },
+      notifyMerchant: function (eventName, data) {
+        console.log("notifyMerchant:", eventName, data);
+      },
+    },
+  };
 
-        function showSuccessModal() {
-          successModal.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        }
+  // 5️⃣ Launch Paytm popup
+  try {
+    window.Paytm.CheckoutJS.init(config)
+      .then(() => {
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch((err) => {
+        console.error("Paytm CheckoutJS error:", err);
+        showError("Unable to launch Paytm Checkout.");
+      });
+  } catch (err) {
+    console.error("Paytm init error:", err);
+    showError("Something went wrong while starting the payment.");
+  }
+}
 
-        function closeSuccessModal() {
-          successModal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-          
-          // Reset form
-          form.reset();
-          selectedCompetitions = [];
-          currentStep = 1;
-          updateStep();
-          
-          // Reset competition cards
-          document.querySelectorAll('.competition-card').forEach(card => {
-            card.classList.remove('selected');
-            const checkbox = card.querySelector('.competition-checkbox');
-            if (checkbox) checkbox.checked = false;
-          });
-        }
+
     </script>
 </body>
 </html>

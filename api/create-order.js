@@ -1,6 +1,15 @@
-// /api/create-payment.js
 import https from "https";
 import PaytmChecksum from "paytmchecksum";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+const MID = process.env.PAYTM_MID;
+const MKEY = process.env.PAYTM_MKEY;
+const WEBSITE = process.env.PAYTM_WEBSITE || "WEBSTAGING";
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -8,42 +17,32 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   if (req.method === "OPTIONS") return res.status(200).end();
 
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-
   try {
-    const { amount, orderId, customer } = req.body;
+    const { amount, customer, orderId } = req.body;
 
-    const paytmParams = {};
-    paytmParams.body = {
-      requestType: "Payment",
-      mid: process.env.PAYTM_MID,
-      websiteName: process.env.PAYTM_WEBSITE,
-      orderId: orderId,
-      callbackUrl: "https://your-vercel-project.vercel.app/api/verify-payment",
-      txnAmount: {
-        value: amount.toString(),
-        currency: "INR",
-      },
-      userInfo: {
-        custId: customer.email,
+    const paytmParams = {
+      body: {
+        requestType: "Payment",
+        mid: MID,
+        websiteName: WEBSITE,
+        orderId: orderId,
+        callbackUrl: `${process.env.BASE_URL}/api/verify-payment`,
+        txnAmount: { value: amount, currency: "INR" },
+        userInfo: { custId: customer.email },
       },
     };
 
     const checksum = await PaytmChecksum.generateSignature(
       JSON.stringify(paytmParams.body),
-      process.env.PAYTM_MERCHANT_KEY
+      MKEY
     );
 
-    paytmParams.head = {
-      signature: checksum,
-    };
-
-    const post_data = JSON.stringify(paytmParams);
+    const post_data = JSON.stringify({ ...paytmParams, head: { signature: checksum } });
 
     const options = {
-      hostname: process.env.PAYTM_ENVIRONMENT === "staging" ? "securegw-stage.paytm.in" : "securegw.paytm.in",
+      hostname: "securegw-stage.paytm.in",
       port: 443,
-      path: `/theia/api/v1/initiateTransaction?mid=${process.env.PAYTM_MID}&orderId=${orderId}`,
+      path: `/theia/api/v1/initiateTransaction?mid=${MID}&orderId=${orderId}`,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,20 +50,16 @@ export default async function handler(req, res) {
       },
     };
 
-    const request = https.request(options, (response) => {
-      let data = "";
-      response.on("data", (chunk) => (data += chunk));
-      response.on("end", () => {
-        const result = JSON.parse(data);
-        res.json(result);
-      });
+    const post_req = https.request(options, (post_res) => {
+      let response = "";
+      post_res.on("data", (chunk) => (response += chunk));
+      post_res.on("end", () => res.status(200).json(JSON.parse(response)));
     });
 
-    request.write(post_data);
-    request.end();
-  } catch (error) {
-    console.error("Paytm init error:", error);
-    res.status(500).json({ error: "Failed to create transaction" });
+    post_req.write(post_data);
+    post_req.end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ ok: false, error: err.message });
   }
 }
-
