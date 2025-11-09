@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
 // ==========================================
-// THREE.JS ARCADE ELEMENTS - DEPTH OF FIELD
+// THREE.JS ARCADE ELEMENTS
 // ==========================================
 
 (function initThreeJSArcade() {
