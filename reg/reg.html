@@ -8,7 +8,7 @@
     
     <!-- Added Razorpay checkout script -->
   <script type="application/javascript" 
-        src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/YOURMID1234567890.js">
+  src="https://securegw-stage.paytm.in/merchantpgpui/checkoutjs/merchants/YOURMID12345.js">
 </script>
 
 
@@ -1537,40 +1537,64 @@
        async function handleSubmit(e) {
   e.preventDefault();
 
+  // 1️⃣ Collect all form data
   const data = collectFormData();
-  const orderId = "ORDER_" + Date.now();
+  const totalAmount = data.totalPrice;
 
-  // Create transaction on backend
-  const resp = await fetch("https://jobi-three.vercel.app/api/create-payment", {
+  // 2️⃣ Create registration entry first
+  const regResponse = await fetch("/api/create-registration", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      amount: data.totalPrice,
-      orderId,
-      customer: data.personal,
-    }),
+    body: JSON.stringify(data),
   });
 
-  const result = await resp.json();
-
-  if (!result.body?.txnToken) {
-    showError("Failed to initialize Paytm transaction.");
+  const regResult = await regResponse.json();
+  if (!regResult.ok) {
+    showError("Error creating registration. Try again.");
     return;
   }
 
-  // Paytm checkout configuration
+  const orderId = regResult.orderId;
+
+  // 3️⃣ Create Paytm order and get txnToken
+  const paytmResponse = await fetch("/api/create-order", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      amount: totalAmount,
+      customer: data.personal,
+      orderId: orderId,
+    }),
+  });
+
+  const paytmResult = await paytmResponse.json();
+  if (!paytmResult.body || !paytmResult.body.txnToken) {
+    showError("Failed to initialize Paytm transaction.");
+    console.error("Paytm response:", paytmResult);
+    return;
+  }
+
+  const txnToken = paytmResult.body.txnToken;
+
+  // 4️⃣ Initialize Paytm Checkout
   const config = {
     root: "",
     flow: "DEFAULT",
     data: {
       orderId: orderId,
-      token: result.body.txnToken,
+      token: txnToken,
       tokenType: "TXN_TOKEN",
-      amount: data.totalPrice.toString(),
+      amount: totalAmount.toString(),
     },
     handler: {
       transactionStatus: function (paymentStatus) {
         console.log("Payment status:", paymentStatus);
+        if (paymentStatus.STATUS === "TXN_SUCCESS") {
+          alert("Payment successful! Redirecting...");
+          window.location.reload(); // optional: refresh page or show success modal
+        } else {
+          showError("Payment failed or cancelled.");
+        }
       },
       notifyMerchant: function (eventName, data) {
         console.log("notifyMerchant:", eventName, data);
@@ -1578,15 +1602,22 @@
     },
   };
 
-  window.Paytm.CheckoutJS.init(config)
-    .then(() => {
-      window.Paytm.CheckoutJS.invoke();
-    })
-    .catch(err => {
-      console.error("Paytm CheckoutJS error:", err);
-      showError("Error launching Paytm checkout.");
-    });
+  // 5️⃣ Launch Paytm popup
+  try {
+    window.Paytm.CheckoutJS.init(config)
+      .then(() => {
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch((err) => {
+        console.error("Paytm CheckoutJS error:", err);
+        showError("Unable to launch Paytm Checkout.");
+      });
+  } catch (err) {
+    console.error("Paytm init error:", err);
+    showError("Something went wrong while starting the payment.");
+  }
 }
+
 
     </script>
 </body>
