@@ -10,16 +10,22 @@
     <link rel="stylesheet" href="style.css" type="text/css">
     <script src="/script.js" defer></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+
+    <!-- Three.js Library for 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
 <body>
+    <!-- Three.js 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <div class="logo">LOCUS</div>
             <ul class="nav-links">
                 <li><a href="#home">HOME</a></li>
-                <li><a href="#guest">GUEST</a></li>
+                <li><a href="#competitions">QUESTS</a></li>
                 <li><a href="#find-us">FIND US</a></li>
                 <li><a href="#contact">CONTACT US</a></li>
                 <div class="nav-menu-main">
@@ -29,13 +35,16 @@
                         </span></li>
                 </div>
             </ul>
+            <button class="mute-btn" id="mute-btn">
+                <i class="fa fa-volume-up"></i>
+            </button>
         </div>
             <!--Submenu-->
     <div class="nav-submenu">
             <ul class="nav-submenu-links">
                 <div class="logo">LOCUS</div>
                 <li><a href="#home">HOME</a></li>
-                <li><a href="#guest">GUEST</a></li>
+                <li><a href="#competitions">QUESTS</a></li>
                 <li><a href="#find-us">FIND US</a></li>
                 <li><a href="#contact">CONTACT US</a></li>
             </ul>
@@ -1016,15 +1025,15 @@
             <div class="social-icons">
                 <a href="https://wa.me/+918590323498/" aria-label="Whatsapp" class="social-icon"><i
                         class="fa fa-whatsapp"></i></a>
-                <a href="mailto:locus2k25@gmail.com" aria-label="Email" class="social-icon"><i
+                <a href="mailto:info@locus2k26.tech" aria-label="Email" class="social-icon"><i
                         class="fa fa-envelope-o"></i></a>
                 <a href="https://maps.app.goo.gl/1WNtwejpXUKrtBHM7" aria-label="Location" class="social-icon"><i
                         class="fa fa-map"></i></a>
             </div>
             <div class="credits">
-                © 2025 LOCUS QUEST - COMPUTER ENGINEERING DEPARTMENT
+                © 2025 LOCUS QUEST - GPTC PERUMBAVOOR COMPUTER ENGINEERING DEPARTMENT
                 <br>
-                ALL PIXELS RESERVED • GAME OVER - PRESS START TO CONTINUE
+                • ALL PIXELS RESERVED •
             </div>
         </div>
     </footer>
@@ -1058,10 +1067,6 @@
 
     <!-- Tone.js for better 8-bit sounds -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
-
 </body>
 
 </html>
-
-
-
