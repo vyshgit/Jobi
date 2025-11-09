@@ -364,10 +364,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         } else {
             return {
-                gameBoy: { x: -24, y: 4, z: 2, scale: 1.4 },
-                cabinet: { x: -9, y: 5.5, z: -16, scale: 1.1 },
-                invader: { x: 9, y: 5.5, z: -16, scale: 1.1 },
-                controller: { x: 24, y: 4, z: 2, scale: 1.4 }
+                gameBoy: { x: -20, y: -4, z: 2, scale: 1.4 },
+                cabinet: { x: -15, y: 9, z: -16, scale: 1.1 },
+                invader: { x: 15, y: 9, z: -16, scale: 1.1 },
+                controller: { x: 20, y: -4, z: 2, scale: 1.4 }
             };
         }
     }
