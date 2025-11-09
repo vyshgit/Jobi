@@ -1540,7 +1540,7 @@
   const orderId = "ORDER_" + Date.now();
 
   // Create transaction on backend
-  const resp = await fetch("https://your-vercel-project.vercel.app/api/create-payment", {
+  const resp = await fetch("https://jobi-three.vercel.app/api/create-payment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
