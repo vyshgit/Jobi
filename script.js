@@ -409,6 +409,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const arcadeObjects = [gameBoyGroup, cabinetGroup, invaderGroup, controllerGroup];
 
+    // Create controller symbols
+    function createTriangle() {
+        const shape = new THREE.Shape();
+        shape.moveTo(0, 1);
+        shape.lineTo(1, -1);
+        shape.lineTo(-1, -1);
+        shape.closePath();
+        const extrudeSettings = {
+            steps: 2,
+            depth: 0.2,
+            bevelEnabled: false,
+        };
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const material = new THREE.MeshPhongMaterial({ color: 0x00ff00, shininess: 60, side: THREE.DoubleSide });
+        const mesh = new THREE.Mesh(geometry, material);
+        return mesh;
+    }
+
+    function createSquare() {
+        const geometry = new THREE.BoxGeometry(1.5, 1.5, 0.2);
+        const edges = new THREE.EdgesGeometry(geometry);
+        const material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const mesh = new THREE.LineSegments(edges, material);
+        return mesh;
+    }
+
+    function createCircle() {
+        const shape = new THREE.Shape();
+        shape.absarc(0, 0, 1, 0, Math.PI * 2, false);
+        const hole = new THREE.Path();
+        hole.absarc(0, 0, 0.8, 0, Math.PI * 2, true);
+        shape.holes.push(hole);
+        const extrudeSettings = {
+            steps: 2,
+            depth: 0.2,
+            bevelEnabled: false,
+        };
+        const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+        const material = new THREE.MeshPhongMaterial({ color: 0x0000ff, shininess: 60, side: THREE.DoubleSide });
+        const mesh = new THREE.Mesh(geometry, material);
+        return mesh;
+    }
+
+    function createCross() {
+        const group = new THREE.Group();
+        const geometry1 = new THREE.BoxGeometry(0.5, 2, 0.5);
+        const geometry2 = new THREE.BoxGeometry(2, 0.5, 0.5);
+        const material = new THREE.MeshPhongMaterial({ color: 0xffff00, shininess: 60 });
+        const mesh1 = new THREE.Mesh(geometry1, material);
+        const mesh2 = new THREE.Mesh(geometry2, material);
+        group.add(mesh1);
+        group.add(mesh2);
+        return group;
+    }
+
+    const symbols = [];
+    const symbolTypes = [createTriangle, createSquare, createCircle, createCross];
+    for (let i = 0; i < 80; i++) {
+        const symbol = symbolTypes[i % 4]();
+        symbol.position.set(
+            (Math.random() - 0.5) * 150,
+            (Math.random() - 0.5) * 80,
+            (Math.random() - 0.5) * 80 - 40
+        );
+        symbol.rotation.set(
+            Math.random() * Math.PI,
+            Math.random() * Math.PI,
+            Math.random() * Math.PI
+        );
+        const scale = Math.random() * 1.5 + 0.5;
+        symbol.scale.set(scale, scale, scale);
+        symbol.userData.initialPosition = symbol.position.clone();
+        symbol.userData.initialRotation = symbol.rotation.clone();
+        scene.add(symbol);
+        symbols.push(symbol);
+    }
+
     // Lighting with enhanced depth perception
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1.4);
     directionalLight.position.set(12, 14, 10);
@@ -484,6 +561,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     child.material.opacity = Math.max(0, 1 - scrollProgress * 0.9);
                 }
             });
+        });
+
+        // Animate symbols
+        symbols.forEach((obj) => {
+            const floatOffset = Math.sin(time * 1.5 + obj.userData.initialPosition.x) * 0.5;
+            const baseY = obj.userData.initialPosition.y + floatOffset;
+
+            // Depth effect
+            const depth = obj.position.z;
+            const speed = (depth > 0) ? (depth / 40) * 20 : (1 - (depth / -40)) * 20; // Increased speed multiplier
+            obj.position.y = baseY - scrollProgress * speed;
+
+            obj.rotation.y = obj.userData.initialRotation.y + scrollProgress * 4;
+            obj.rotation.x = obj.userData.initialRotation.x + scrollProgress * 4;
+            obj.rotation.z = obj.userData.initialRotation.z + scrollProgress * 4;
         });
 
         renderer.render(scene, camera);
