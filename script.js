@@ -685,6 +685,7 @@ function faBars() {
         submenu.style.opacity = '1';
         barsIcon.style.display = 'none';
         closeIcon.style.display = 'block';
+        document.body.classList.add('no-scroll');
     }
 }
 
@@ -698,6 +699,7 @@ function materialSymbolsOutlines() {
         submenu.style.opacity = '0.5';
         barsIcon.style.display = 'block';
         closeIcon.style.display = 'none';
+        document.body.classList.remove('no-scroll');
     }
 }
 

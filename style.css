@@ -788,3 +788,7 @@ footer {
         transition: none !important;
     }
 }
+
+body.no-scroll {
+    overflow: hidden;
+}
