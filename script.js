@@ -63,22 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
             new THREE.BoxGeometry(0.4, 1.5, 0.4),
             new THREE.MeshPhongMaterial({ color: 0x0080ff, shininess: 60 })
         );
-        dpadVertical.position.set(-1.5, -1, 0.7);
+        dpadVertical.position.set(-1.5, 0, 0.7);
         group.add(dpadVertical);
 
         const dpadHorizontal = new THREE.Mesh(
             new THREE.BoxGeometry(1.5, 0.4, 0.4),
             new THREE.MeshPhongMaterial({ color: 0x0080ff, shininess: 60 })
         );
-        dpadHorizontal.position.set(-1.5, -1, 0.7);
+        dpadHorizontal.position.set(-1.5, 0, 0.7);
         group.add(dpadHorizontal);
 
         const buttonRadius = 0.35;
         const buttonPositions = [
+            { x: 1.2, y: 0.5 },
+            { x: 1.8, y: 0 },
             { x: 1.2, y: -0.5 },
-            { x: 1.8, y: -1 },
-            { x: 1.2, y: -1.5 },
-            { x: 0.6, y: -1 }
+            { x: 0.6, y: 0 }
         ];
         const buttonColors = [0xff0000, 0xffff00, 0x0080ff, 0x00ff00];
 
@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
             new THREE.BoxGeometry(1.2, 0.3, 0.2),
             new THREE.MeshPhongMaterial({ color: 0x00ff00, shininess: 50 })
         );
-        startButton.position.set(0.65, -2.5, 0.7);
+        startButton.position.set(0.3, -2.5, 0.7);
         group.add(startButton);
 
         const selectButton = new THREE.Mesh(
             new THREE.BoxGeometry(1.2, 0.3, 0.2),
             new THREE.MeshPhongMaterial({ color: 0xffff00, shininess: 50 })
         );
-        selectButton.position.set(-0.5, -2.5, 0.7);
+        selectButton.position.set(-0.8, -2.5, 0.7);
         group.add(selectButton);
 
         const speakerGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.1);
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cabButtonPositions = [
             { x: 0.3, y: -1.2 },
             { x: 1, y: -1.2 },
-            { x: 1, y: -1.8 },
+            { x: 1.6, y: -1.2 },
             { x: 0.3, y: -1.8 }
         ];
         const cabButtonColors = [0xff0000, 0xffff00, 0x0080ff, 0x00ff00];
