@@ -1535,85 +1535,63 @@
        async function handleSubmit(e) {
   e.preventDefault();
 
-  // 1️⃣ Collect all form data
   const data = collectFormData();
   const totalAmount = data.totalPrice;
 
-  // 2️⃣ Create registration entry first
-  const regResponse = await fetch("/api/create-registration", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  const regResult = await regResponse.json();
-  if (!regResult.ok) {
-    showError("Error creating registration. Try again.");
+  if (totalAmount <= 0) {
+    showError("Please select at least one event.");
     return;
   }
 
-  const orderId = regResult.orderId;
-
-  // 3️⃣ Create Paytm order and get txnToken
-  const paytmResponse = await fetch("/api/create-order", {
+  // 1️⃣ Create order on your server
+  const orderRes = await fetch("/api/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       amount: totalAmount,
+      orderId: "order_" + Date.now(),
       customer: data.personal,
-      orderId: orderId,
     }),
   });
 
-  const paytmResult = await paytmResponse.json();
-  if (!paytmResult.body || !paytmResult.body.txnToken) {
-    showError("Failed to initialize Paytm transaction.");
-    console.error("Paytm response:", paytmResult);
+  const orderData = await orderRes.json();
+
+  if (!orderData.id) {
+    showError("Failed to create payment order.");
+    console.error("Order response:", orderData);
     return;
   }
 
-  const txnToken = paytmResult.body.txnToken;
+  // 2️⃣ Configure Razorpay popup
+  const options = {
+    key: orderData.key,
+    amount: orderData.amount,
+    currency: "INR",
+    name: "LOCUS 2025",
+    description: "Event Registration",
+    order_id: orderData.id,
 
-  // 4️⃣ Initialize Paytm Checkout
-  const config = {
-    root: "",
-    flow: "DEFAULT",
-    data: {
-      orderId: orderId,
-      token: txnToken,
-      tokenType: "TXN_TOKEN",
-      amount: totalAmount.toString(),
+    prefill: {
+      name: data.personal.fullName,
+      email: data.personal.email,
+      contact: data.personal.phone,
     },
-    handler: {
-      transactionStatus: function (paymentStatus) {
-        console.log("Payment status:", paymentStatus);
-        if (paymentStatus.STATUS === "TXN_SUCCESS") {
-          alert("Payment successful! Redirecting...");
-          window.location.reload(); // optional: refresh page or show success modal
-        } else {
-          showError("Payment failed or cancelled.");
-        }
-      },
-      notifyMerchant: function (eventName, data) {
-        console.log("notifyMerchant:", eventName, data);
-      },
+
+    handler: function (response) {
+      alert("Payment Successful!");
+      console.log(response);
+      window.location.reload();
+    },
+
+    theme: {
+      color: "#00ff00",
     },
   };
 
-  // 5️⃣ Launch Paytm popup
-  try {
-    window.Paytm.CheckoutJS.init(config)
-      .then(() => {
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch((err) => {
-        console.error("Paytm CheckoutJS error:", err);
-        showError("Unable to launch Paytm Checkout.");
-      });
-  } catch (err) {
-    console.error("Paytm init error:", err);
-    showError("Something went wrong while starting the payment.");
-  }
+  const rzp = new Razorpay(options);
+
+  // 3️⃣ Open the Razorpay popup
+  rzp.open();
 }
 
 
