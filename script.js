@@ -880,7 +880,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (enterButton) {
                 enterButton.addEventListener('click', (e) => {
                     e.preventDefault();
-                    window.location.href = '/reg/registration.html';
+                    window.location.href = '/reg/reg.html';
                 });
             }
         });
