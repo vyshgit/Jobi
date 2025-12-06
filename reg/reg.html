@@ -1531,29 +1531,31 @@
           reviewSection.innerHTML = html;
         }
 
-       async function handleSubmit(e) {
+      async function handleSubmit(e) {
   e.preventDefault();
+  console.log("Proceed to payment clicked");
 
   const data = collectFormData();
-  const totalAmount = data.totalPrice;
 
-  if (totalAmount <= 0) {
-    showError("Please select at least one event.");
+  if (data.totalPrice <= 0) {
+    showError("Invalid amount");
     return;
   }
 
-  // 1️⃣ Create pending registration
+  // 1️⃣ Create registration (pending)
   const regRes = await fetch("/api/create-registration", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       personal: data.personal,
       competitions: data.competitions,
-      totalAmount: totalAmount,
-    }),
+      totalAmount: data.totalPrice
+    })
   });
 
   const regResult = await regRes.json();
+  console.log("Registration response:", regResult);
+
   if (!regResult.ok) {
     showError("Registration failed");
     return;
@@ -1566,33 +1568,34 @@
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      amount: totalAmount,
-      orderId: orderId,
-    }),
+      amount: data.totalPrice,
+      orderId
+    })
   });
 
-  const orderData = await orderRes.json();
+  const order = await orderRes.json();
+  console.log("Razorpay order:", order);
 
-  // 3️⃣ Open Razorpay
+  if (!order.id) {
+    showError("Payment init failed");
+    return;
+  }
+
+  // 3️⃣ Razorpay Checkout
   const options = {
-    key: orderData.key,
-    amount: orderData.amount,
+    key: order.key,       // PUBLIC key from backend
+    amount: order.amount,
     currency: "INR",
-    name: "LOCUS 2026",
-    description: "Event Registration",
-    order_id: orderData.id,
-    prefill: {
-      name: data.personal.fullName,
-      email: data.personal.email,
-      contact: data.personal.phone,
-    },
-    handler: function () {
+    name: "LOCUS TechFest",
+    order_id: order.id,
+    handler: () => {
       alert("Payment successful! Confirmation will follow.");
     },
-    theme: { color: "#00ff00" },
+    theme: { color: "#00ff00" }
   };
 
-  new Razorpay(options).open();
+  const rzp = new Razorpay(options);
+  rzp.open();
 }
 
 
