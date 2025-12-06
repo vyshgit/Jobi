@@ -1538,76 +1538,44 @@
   const totalAmount = data.totalPrice;
 
   if (totalAmount <= 0) {
-    showError("Please select at least one event.");
+    alert("Select at least one event");
     return;
   }
 
-  // 1️⃣ Create registration (pending)
-  const regRes = await fetch("/api/create-registration", {
+  const res = await fetch("/api/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      personal: data.personal,
-      competitions: data.competitions,
-      totalAmount: data.totalPrice
-    })
+    body: JSON.stringify({ amount: totalAmount })
   });
 
-  const regResult = await regRes.json();
+  const order = await res.json();
 
-  if (!regResult.ok) {
-    showError("Registration failed");
+  if (!order.orderId) {
+    alert("Failed to create order");
+    console.error(order);
     return;
   }
 
-  const orderId = regResult.orderId;
-
-  // 2️⃣ Create Razorpay order
-  const orderRes = await fetch("/api/create-order", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      amount: totalAmount,
-      orderId: orderId
-    }),
-  });
-
-  const orderData = await orderRes.json();
-
-  if (!orderData.id) {
-    showError("Failed to create payment order.");
-    console.error(orderData);
-    return;
-  }
-
-  // 3️⃣ Launch Razorpay popup
   const options = {
-    key: orderData.key,
-    amount: orderData.amount,
+    key: order.key,
+    amount: order.amount,
     currency: "INR",
-    name: "LOCUS 2026",
+    name: "LOCUS 2K26",
     description: "Event Registration",
-    order_id: orderData.id,
-
-    prefill: {
-      name: data.personal.fullName,
-      email: data.personal.email,
-      contact: data.personal.phone,
+    order_id: order.orderId,
+    handler: function (response) {
+      alert("Payment success (TEST MODE)");
+      console.log(response);
     },
-
-    handler: function () {
-      alert("Payment successful!");
-      window.location.reload();
-    },
-
     theme: {
-      color: "#00ff00",
-    },
+      color: "#00ff00"
+    }
   };
 
   const rzp = new Razorpay(options);
   rzp.open();
 }
+
 
     </script>
 </body>
