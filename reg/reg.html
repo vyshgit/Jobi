@@ -1531,7 +1531,7 @@
           reviewSection.innerHTML = html;
         }
 
-       async function handleSubmit(e) {
+     async function handleSubmit(e) {
   e.preventDefault();
 
   const data = collectFormData();
@@ -1542,35 +1542,33 @@
     return;
   }
 
-  
+  // 1️⃣ Create registration (pending)
   const regRes = await fetch("/api/create-registration", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    personal: data.personal,
-    competitions: data.competitions,
-    totalAmount: data.totalPrice
-  })
-});
-const order_id = regResult.orderId;
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      personal: data.personal,
+      competitions: data.competitions,
+      totalAmount: data.totalPrice
+    })
+  });
 
-const regResult = await regRes.json();
-if (!regResult.ok) {
-  showError("Registration failed");
-  return;
-}
+  const regResult = await regRes.json();
 
-  // 1️⃣ Create order on your server
-  
-  
-  
+  if (!regResult.ok) {
+    showError("Registration failed");
+    return;
+  }
+
+  const orderId = regResult.orderId;
+
+  // 2️⃣ Create Razorpay order
   const orderRes = await fetch("/api/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       amount: totalAmount,
-      orderId: "order_" + Date.now(),
-      customer: data.personal,
+      orderId: orderId
     }),
   });
 
@@ -1578,11 +1576,11 @@ if (!regResult.ok) {
 
   if (!orderData.id) {
     showError("Failed to create payment order.");
-    console.error("Order response:", orderData);
+    console.error(orderData);
     return;
   }
 
-  // 2️⃣ Configure Razorpay popup
+  // 3️⃣ Launch Razorpay popup
   const options = {
     key: orderData.key,
     amount: orderData.amount,
@@ -1597,9 +1595,8 @@ if (!regResult.ok) {
       contact: data.personal.phone,
     },
 
-    handler: function (response) {
-      alert("Payment Successful!");
-      console.log(data.personal.fullName);
+    handler: function () {
+      alert("Payment successful!");
       window.location.reload();
     },
 
@@ -1609,11 +1606,8 @@ if (!regResult.ok) {
   };
 
   const rzp = new Razorpay(options);
-
-  // 3️⃣ Open the Razorpay popup
   rzp.open();
 }
-
 
     </script>
 </body>
