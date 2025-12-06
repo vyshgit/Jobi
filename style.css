@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
 /* Three.js 3D Background Canvas */
 #bg-canvas {
     position: fixed;
@@ -791,7 +804,7 @@ footer {
 
 .nav-menu span {
     display: none;
-     z-index: 10001;
+    z-index: 10001;
 }
 
 @media (max-width:1270px) {
