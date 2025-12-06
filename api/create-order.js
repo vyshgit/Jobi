@@ -19,10 +19,11 @@ export default async function handler(req, res) {
     });
 
     return res.json({
-      id: order.id,
-      amount: order.amount,
-      key: process.env.RAZORPAY_KEY_ID,
-    });
+  orderId: order.id,
+  amount: order.amount,
+  key: process.env.RAZORPAY_KEY_ID,
+});
+
   } catch (err) {
     console.error(err);
     return res.json({ error: true });
