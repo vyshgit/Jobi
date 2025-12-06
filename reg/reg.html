@@ -1339,15 +1339,15 @@
           
           // Update navigation buttons
           // Update navigation buttons
-prevBtn.style.display = currentStep === 1 ? "none" : "inline-flex";
+          prevBtn.style.display = currentStep === 1 ? "none" : "inline-flex";
 
-if (currentStep === totalSteps) {
-  nextBtn.style.display = "none";
-  submitBtn.style.display = "inline-flex";
-} else {
-  nextBtn.style.display = "inline-flex";
-  submitBtn.style.display = "none";
-}
+          if (currentStep === totalSteps) {
+          nextBtn.style.display = "none";
+          submitBtn.style.display = "inline-flex";
+          } else {
+          nextBtn.style.display = "inline-flex";
+          submitBtn.style.display = "none";
+          }
 
         }
 
