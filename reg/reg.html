@@ -1133,7 +1133,7 @@
             initializeForm();
             setupEventListeners();
             setupSoundEvents();
-            updateStep();
+            updateStep();1
           } else {
             console.error("Form elements not found. Initialization failed.");
           }
@@ -1338,17 +1338,16 @@
           });
           
           // Update navigation buttons
-          // Update navigation buttons
-          prevBtn.style.display = currentStep === 1 ? "none" : "inline-flex";
-
+          prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
+          
           if (currentStep === totalSteps) {
-          nextBtn.style.display = "none";
-          submitBtn.style.display = "inline-flex";
+            nextBtn.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            populateReviewSection();
           } else {
-          nextBtn.style.display = "inline-flex";
-          submitBtn.style.display = "none";
+            nextBtn.classList.remove('hidden');
+            submitBtn.classList.add('hidden');
           }
-
         }
 
         function validateCurrentStep() {
@@ -1532,73 +1531,88 @@
           reviewSection.innerHTML = html;
         }
 
-      async function handleSubmit(e) {
+       async function handleSubmit(e) {
   e.preventDefault();
-  console.log("Proceed to payment clicked");
 
   const data = collectFormData();
+  const totalAmount = data.totalPrice;
 
-  if (data.totalPrice <= 0) {
-    showError("Invalid amount");
+  if (totalAmount <= 0) {
+    showError("Please select at least one event.");
     return;
   }
 
-  // 1️⃣ Create registration (pending)
+  
   const regRes = await fetch("/api/create-registration", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      personal: data.personal,
-      competitions: data.competitions,
-      totalAmount: data.totalPrice
-    })
-  });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    personal: data.personal,
+    competitions: data.competitions,
+    totalAmount: data.totalPrice
+  })
+});
+const order_id = regResult.orderId;
 
-  const regResult = await regRes.json();
-  console.log("Registration response:", regResult);
+const regResult = await regRes.json();
+if (!regResult.ok) {
+  showError("Registration failed");
+  return;
+}
 
-  if (!regResult.ok) {
-    showError("Registration failed");
-    return;
-  }
-
-  const orderId = regResult.orderId;
-
-  // 2️⃣ Create Razorpay order
+  // 1️⃣ Create order on your server
+  
+  
+  
   const orderRes = await fetch("/api/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      amount: data.totalPrice,
-      orderId
-    })
+      amount: totalAmount,
+      orderId: "order_" + Date.now(),
+      customer: data.personal,
+    }),
   });
 
-  const order = await orderRes.json();
-  console.log("Razorpay order:", order);
+  const orderData = await orderRes.json();
 
-  if (!order.id) {
-    showError("Payment init failed");
+  if (!orderData.id) {
+    showError("Failed to create payment order.");
+    console.error("Order response:", orderData);
     return;
   }
 
-  // 3️⃣ Razorpay Checkout
+  // 2️⃣ Configure Razorpay popup
   const options = {
-    key: order.key,       // PUBLIC key from backend
-    amount: order.amount,
+    key: orderData.key,
+    amount: orderData.amount,
     currency: "INR",
-    name: "LOCUS TechFest",
-    order_id: order.id,
-    handler: () => {
-      alert("Payment successful! Confirmation will follow.");
+    name: "LOCUS 2026",
+    description: "Event Registration",
+    order_id: orderData.id,
+
+    prefill: {
+      name: data.personal.fullName,
+      email: data.personal.email,
+      contact: data.personal.phone,
     },
-    theme: { color: "#00ff00" }
+
+    handler: function (response) {
+      alert("Payment Successful!");
+      console.log(data.personal.fullName);
+      window.location.reload();
+    },
+
+    theme: {
+      color: "#00ff00",
+    },
   };
 
   const rzp = new Razorpay(options);
+
+  // 3️⃣ Open the Razorpay popup
   rzp.open();
 }
-
 
 
     </script>
