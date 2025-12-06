@@ -1542,26 +1542,38 @@
     return;
   }
 
-  // 1️⃣ Create order on your server
+  // 1️⃣ Create pending registration
+  const regRes = await fetch("/api/create-registration", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      personal: data.personal,
+      competitions: data.competitions,
+      totalAmount: totalAmount,
+    }),
+  });
+
+  const regResult = await regRes.json();
+  if (!regResult.ok) {
+    showError("Registration failed");
+    return;
+  }
+
+  const orderId = regResult.orderId;
+
+  // 2️⃣ Create Razorpay order
   const orderRes = await fetch("/api/create-order", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       amount: totalAmount,
-      orderId: "order_" + Date.now(),
-      customer: data.personal,
+      orderId: orderId,
     }),
   });
 
   const orderData = await orderRes.json();
 
-  if (!orderData.id) {
-    showError("Failed to create payment order.");
-    console.error("Order response:", orderData);
-    return;
-  }
-
-  // 2️⃣ Configure Razorpay popup
+  // 3️⃣ Open Razorpay
   const options = {
     key: orderData.key,
     amount: orderData.amount,
@@ -1569,29 +1581,20 @@
     name: "LOCUS 2026",
     description: "Event Registration",
     order_id: orderData.id,
-
     prefill: {
       name: data.personal.fullName,
       email: data.personal.email,
       contact: data.personal.phone,
     },
-
-    handler: function (response) {
-      alert("Payment Successful!");
-      console.log(data.personal.fullName);
-      window.location.reload();
+    handler: function () {
+      alert("Payment successful! Confirmation will follow.");
     },
-
-    theme: {
-      color: "#00ff00",
-    },
+    theme: { color: "#00ff00" },
   };
 
-  const rzp = new Razorpay(options);
-
-  // 3️⃣ Open the Razorpay popup
-  rzp.open();
+  new Razorpay(options).open();
 }
+
 
 
     </script>
