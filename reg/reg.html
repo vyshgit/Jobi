@@ -1338,16 +1338,17 @@
           });
           
           // Update navigation buttons
-          prevBtn.style.display = currentStep === 1 ? 'none' : 'inline-flex';
-          
-          if (currentStep === totalSteps) {
-            nextBtn.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-            populateReviewSection();
-          } else {
-            nextBtn.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
-          }
+          // Update navigation buttons
+prevBtn.style.display = currentStep === 1 ? "none" : "inline-flex";
+
+if (currentStep === totalSteps) {
+  nextBtn.style.display = "none";
+  submitBtn.style.display = "inline-flex";
+} else {
+  nextBtn.style.display = "inline-flex";
+  submitBtn.style.display = "none";
+}
+
         }
 
         function validateCurrentStep() {
