@@ -15,6 +15,7 @@ export default async function handler(req, res) {
       amount: amount * 100,
       currency: "INR",
       receipt: orderId,
+      checkout_config_id: "config_RoLAkKg0Awnnav"
     });
 
     return res.json({
