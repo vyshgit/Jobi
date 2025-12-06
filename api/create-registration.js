@@ -11,7 +11,8 @@ export default async function handler(req, res) {
 
   const { personal, competitions, totalAmount } = req.body;
 
-  const order_id = "ORD_" + crypto.randomUUID();
+  // Create a stable order reference
+  const order_id = "ORDER_" + crypto.randomUUID();
 
   const { error } = await supabase
     .from("registrations")
@@ -23,16 +24,13 @@ export default async function handler(req, res) {
       competitions,
       total_amount: totalAmount,
       order_id,
-      status: "pending",
+      status: "pending"
     });
 
   if (error) {
-    console.error("Supabase error:", error);
+    console.error(error);
     return res.status(500).json({ ok: false });
   }
 
-  return res.status(200).json({
-    ok: true,
-    orderId: order_id,
-  });
+  res.status(200).json({ ok: true, orderId: order_id });
 }
